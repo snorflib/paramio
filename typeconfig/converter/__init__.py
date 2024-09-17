@@ -1,4 +1,4 @@
-__all__ = ("ConverterType",)
+__all__ = ("Caster",)
 
 
-from .type import ConverterType
+from .caster import Caster
