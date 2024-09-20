@@ -3,5 +3,5 @@ __all__ = (
     "Loader",
 )
 
-from .base import Loader
+from .loader import Loader
 from .type import LoaderType

@@ -1,6 +1,7 @@
 import typing
 
-from src.typeconfig import converters, readers
+from src.typeconfig import converter as conv
+from src.typeconfig import reader as read
 
 KeyType = typing.TypeVar("KeyType")
 ValueType = typing.TypeVar("ValueType", covariant=True)
@@ -17,8 +18,8 @@ class Loader(typing.Generic[ValueType]):
     def __init__(
         self,
         key: KeyType,
-        reader: readers.ReaderType[KeyType, T],
-        converter: converters.ConverterType[T, ValueType],
+        reader: read.ReaderType[KeyType, T],
+        converter: conv.ConverterType[T, ValueType],
     ) -> None:
         self._key = key
         self._reader = reader
