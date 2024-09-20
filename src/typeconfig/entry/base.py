@@ -1,22 +1,24 @@
+import abc
 import typing
 
 from src.typeconfig import loader as ld
 
-from .base import BaseField
-
 ValueType = typing.TypeVar("ValueType")
 
 
-class ImmutableField(BaseField[ValueType]):
-    __slots__ = ("_loader",)
-
+class BaseEntry(typing.Generic[ValueType], abc.ABC):
     def __init__(self, loader: ld.LoaderType[ValueType]) -> None:
         self._loader = loader
 
     @property
+    @abc.abstractmethod
     def value(self) -> ValueType:
-        return self._loader()
+        raise NotImplementedError
 
     @value.setter
+    @abc.abstractmethod
     def value(self, value: ValueType) -> None:
-        raise NotImplementedError(f"{self!r} is immutable")
+        raise NotImplementedError
+
+    def __repr__(self) -> str:
+        return f"{type(self)} -> {self.__orig_bases__[0]}"  # type: ignore

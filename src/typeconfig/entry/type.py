@@ -3,5 +3,5 @@ import typing
 ValueType = typing.TypeVar("ValueType")
 
 
-class FieldType(typing.Protocol[ValueType]):
+class EntryType(typing.Protocol[ValueType]):
     value: ValueType
