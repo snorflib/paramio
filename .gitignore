@@ -645,6 +645,7 @@ MigrationBackup/
 
 # dev environment
 */test.py
-dev/
+test.py
+dev/**
 
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,vs
