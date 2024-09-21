@@ -9,7 +9,7 @@ class EntryError(ParamioError): ...
 
 
 class ReadOnlyEntryError(EntryError):
-    def __init__(self, inst: types.EntryType[typing.Any]) -> None:
+    def __init__(self, inst: types.EntryType[typing.Any, typing.Any]) -> None:
         self._inst = inst
 
     def __str__(self) -> str:

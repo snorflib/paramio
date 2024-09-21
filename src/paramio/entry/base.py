@@ -1,24 +1,36 @@
-import abc
 import typing
 
+from src.paramio import exceptions as exc
 from src.paramio import types
 
-ValueType = typing.TypeVar("ValueType")
+KeyType = typing.TypeVar("KeyType")
+InType = typing.TypeVar("InType")
+OutType = typing.TypeVar("OutType")
+T = typing.TypeVar("T")
 
 
-class BaseEntry(types.EntryType[ValueType]):
-    def __init__(self, loader: types.LoaderType[ValueType]) -> None:
-        self._loader = loader
+class ImmutableEntry(types.EntryType[InType, OutType]):
+    __slots__ = (
+        "_key",
+        "_reader",
+        "_conv",
+    )
 
-    @property
-    @abc.abstractmethod
-    def value(self) -> ValueType:
-        raise NotImplementedError
+    def __init__(
+        self,
+        key: KeyType,
+        reader: types.ReaderType[KeyType, T],
+        converter: types.ConverterType[T, OutType],
+    ) -> None:
+        self._key = key
+        self._reader = reader
+        self._conv = converter
 
-    @value.setter
-    @abc.abstractmethod
-    def value(self, value: ValueType) -> None:
-        raise NotImplementedError
+    def get_value(self) -> OutType:
+        return self._conv(self._reader[self._key])
+
+    def set_value(self, value: InType) -> None:
+        raise exc.ReadOnlyEntryError(self)
 
     def __repr__(self) -> str:
-        return f"{type(self)} -> {self.__orig_bases__[0]}"  # type: ignore
+        return f"{type(self).__name__}( {self._reader!r}:{self._key} )"

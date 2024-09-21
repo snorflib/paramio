@@ -1,7 +1,3 @@
-__all__ = (
-    "BaseEntry",
-    "ImmutableEntry",
-)
+__all__ = ("ImmutableEntry",)
 
-from .base import BaseEntry
-from .immutable import ImmutableEntry
+from .base import ImmutableEntry

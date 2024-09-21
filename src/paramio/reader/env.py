@@ -8,3 +8,6 @@ class Env(types.ReaderType[str, str]):
 
     def __getitem__(self, key: str) -> str:
         return os.environ[key]
+
+    def __repr__(self) -> str:
+        return type(self).__name__
