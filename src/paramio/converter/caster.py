@@ -1,10 +1,12 @@
 import typing
 
+from src.paramio import types
+
 ValueType = typing.TypeVar("ValueType", contravariant=True)
 CastType = typing.TypeVar("CastType", covariant=True)
 
 
-class Caster(typing.Generic[ValueType, CastType]):
+class Caster(types.ConverterType[ValueType, CastType]):
     __slots__ = ("_cast_to",)
 
     def __init__(self, cast_to: CastType) -> None:

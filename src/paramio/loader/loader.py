@@ -1,13 +1,13 @@
 import typing
 
-from src.typeconfig import types
+from src.paramio import types
 
 KeyType = typing.TypeVar("KeyType")
 ValueType = typing.TypeVar("ValueType", covariant=True)
 T = typing.TypeVar("T")
 
 
-class Loader(typing.Generic[ValueType]):
+class Loader(types.LoaderType[ValueType]):
     __slots__ = (
         "_key",
         "_reader",

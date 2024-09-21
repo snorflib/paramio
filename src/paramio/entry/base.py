@@ -1,12 +1,12 @@
 import abc
 import typing
 
-from src.typeconfig import types
+from src.paramio import types
 
 ValueType = typing.TypeVar("ValueType")
 
 
-class BaseEntry(typing.Generic[ValueType], abc.ABC):
+class BaseEntry(types.EntryType[ValueType]):
     def __init__(self, loader: types.LoaderType[ValueType]) -> None:
         self._loader = loader
 
