@@ -30,10 +30,6 @@ class BaseField(types.FieldType[Inst, InType, OutType]):
         self._name = name
 
     @abc.abstractmethod
-    def info(self) -> str:
-        raise NotImplementedError
-
-    @abc.abstractmethod
     def _get_value(self, instance: Inst, owner: type[Inst]) -> OutType:
         raise NotImplementedError
 

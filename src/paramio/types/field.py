@@ -21,7 +21,3 @@ class FieldType(typing.Protocol[Inst, InType, OutType]):
     @abc.abstractmethod
     def __set__(self, instance: Inst, value: InType) -> None:
         raise NotImplementedError
-
-    @abc.abstractmethod
-    def info(self) -> str:
-        raise NotImplementedError
