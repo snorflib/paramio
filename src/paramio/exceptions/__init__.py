@@ -4,10 +4,10 @@ __all__ = (
     "EntryError",
     "ReadOnlyEntryError",
     #
-    "FieldError",
-    "ReadOnlyFieldError",
+    "ViewError",
+    "ReadOnlyViewError",
 )
 
 from .base import ParamioError
 from .entry import EntryError, ReadOnlyEntryError
-from .field import FieldError, ReadOnlyFieldError
+from .field import ReadOnlyViewError, ViewError

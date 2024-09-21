@@ -5,11 +5,11 @@ from src.paramio import types
 from .base import ParamioError
 
 
-class FieldError(ParamioError): ...
+class ViewError(ParamioError): ...
 
 
-class ReadOnlyFieldError(FieldError):
-    def __init__(self, inst: typing.Any, field: types.FieldType[typing.Any, typing.Any, typing.Any]) -> None:
+class ReadOnlyViewError(ViewError):
+    def __init__(self, inst: typing.Any, field: types.ViewType[typing.Any, typing.Any, typing.Any]) -> None:
         self._inst = inst
         self._field = field
 

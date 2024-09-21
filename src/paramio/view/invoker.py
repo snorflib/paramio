@@ -2,10 +2,10 @@ import typing
 
 from src.paramio import exceptions as exc
 
-from .base import BaseField, Inst, InType, OutType
+from .base import BaseView, Inst, InType, OutType
 
 
-class InvokerField(BaseField[Inst, InType, OutType]):
+class InvokerView(BaseView[Inst, InType, OutType]):
     __slots__ = (
         "_getter",
         "_setter",
@@ -24,6 +24,6 @@ class InvokerField(BaseField[Inst, InType, OutType]):
 
     def _set_value(self, instance: Inst, value: InType) -> None:
         if self._setter is None:
-            raise exc.ReadOnlyFieldError(instance, self)
+            raise exc.ReadOnlyViewError(instance, self)
 
         self._setter(instance, value)

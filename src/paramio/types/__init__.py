@@ -1,5 +1,5 @@
 __all__ = (
-    "FieldType",
+    "ViewType",
     "ReaderType",
     "ConverterType",
     "EntryType",
@@ -8,5 +8,5 @@ __all__ = (
 
 from .converter import ConverterType
 from .entry import EntryType
-from .field import FieldType
 from .reader import ReaderType
+from .view import ViewType

@@ -10,7 +10,7 @@ InType = typing.TypeVar("InType", contravariant=True)
 OutType = typing.TypeVar("OutType", covariant=True)
 
 
-class BaseField(types.FieldType[Inst, InType, OutType]):
+class BaseView(types.ViewType[Inst, InType, OutType]):
     __slots__ = ("_name",)
 
     @typing.overload

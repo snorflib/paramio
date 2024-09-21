@@ -8,7 +8,8 @@ InType = typing.TypeVar("InType", contravariant=True)
 OutType = typing.TypeVar("OutType", covariant=True)
 
 
-class FieldType(typing.Protocol[Inst, InType, OutType]):
+@typing.runtime_checkable
+class ViewType(typing.Protocol[Inst, InType, OutType]):
     @typing.overload
     def __get__(self, instance: None, owner: type[Inst]) -> typing.Self: ...
     @typing.overload
