@@ -1,7 +1,3 @@
-__all__ = (
-    "Env",
-    "ReaderType",
-)
+__all__ = ("Env",)
 
 from .env import Env
-from .type import ReaderType

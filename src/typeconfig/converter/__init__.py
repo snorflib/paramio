@@ -1,6 +1,5 @@
 __all__ = (
     "Caster",
-    "ConverterType",
     "dummy_converter",
 )
 
@@ -8,7 +7,6 @@ __all__ = (
 import typing
 
 from .caster import Caster
-from .type import ConverterType
 
 ValueType = typing.TypeVar("ValueType")
 

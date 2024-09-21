@@ -1,13 +1,13 @@
 import abc
 import typing
 
-from src.typeconfig import loader as ld
+from src.typeconfig import types
 
 ValueType = typing.TypeVar("ValueType")
 
 
 class BaseEntry(typing.Generic[ValueType], abc.ABC):
-    def __init__(self, loader: ld.LoaderType[ValueType]) -> None:
+    def __init__(self, loader: types.LoaderType[ValueType]) -> None:
         self._loader = loader
 
     @property

@@ -1,9 +1,8 @@
 import os
-import typing
 
 
 class Env:
     __slots__ = ()
 
-    def __getitem__(self, key: str) -> typing.Any:
+    def __getitem__(self, key: str) -> str:
         return os.environ[key]

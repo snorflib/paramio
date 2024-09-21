@@ -1,7 +1,3 @@
-__all__ = (
-    "LoaderType",
-    "Loader",
-)
+__all__ = ("Loader",)
 
 from .loader import Loader
-from .type import LoaderType
