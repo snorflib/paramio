@@ -2,6 +2,9 @@ Type conversion
 Aliases
 command line interface
 nesting
+singleton
+only declare typevars once
+create interface for the KeyType (__add__)
 
 @paramio(path=..., encoding=..., prefix=..., reader=...)
 class A:

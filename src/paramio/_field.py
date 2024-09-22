@@ -1,28 +1,45 @@
+from __future__ import annotations
+
+import dataclasses
 import typing
-from dataclasses import dataclass
 
-from . import entry, types, view
+from . import _internal, base, types
 
-SENTINEL = object()
-
-
-@dataclass(slots=True, kw_only=True)
-class Field:
-    default: typing.Any = SENTINEL
-    key: str | None = None
-
-    def build_entry(self) -> types.EntryType[typing.Any, typing.Any]:
-        return entry.ImmutableEntry()
-
-    def build_view(self, getter: typing.Callable[[typing.Any], typing.Any]) -> types.ViewType[*((typing.Any,) * 3)]:
-        return view.InvokerView(getter)
-
-    def __set_name__(self, obj: type[typing.Any], name: str) -> None:
-        self.key = name
+KeyType = typing.TypeVar("KeyType", default=typing.Any)
+RawType = typing.TypeVar("RawType", default=typing.Any)
+OutType = typing.TypeVar("OutType", default=typing.Any)
+InType = typing.TypeVar("InType", default=typing.Any)
+ConfigType = typing.TypeVar("ConfigType", bound=base.BaseConfig, default=base.BaseConfig)
 
 
-T = typing.TypeVar("T")
+@dataclasses.dataclass(slots=True)
+class Field(
+    typing.Generic[
+        KeyType,
+        RawType,
+        InType,
+        OutType,
+        ConfigType,
+    ]
+):
+    default: OutType | _internal.SentinelType = _internal.SENTINEL
+    prefix: KeyType | None = None
+    key: KeyType | None = None
+    reader: types.ReaderType[KeyType, RawType] | None = None
+    conv: types.ConverterType[RawType, OutType] | None = None
+
+    name: str = dataclasses.field(init=False)
+    type_: typing.Any = dataclasses.field(init=False)
+
+    def __set_name__(self, obj: type[ConfigType], name: str) -> None:
+        self.type_ = obj.__annotations__.get(name, typing.Any)
+        self.name = name
 
 
-def field(default: T) -> T:
+def field(
+    default: OutType,
+    key: KeyType,
+    reader: types.ReaderType[KeyType, RawType],
+    conv: types.ConverterType[RawType, OutType],
+) -> OutType:
     return Field(**vars())  # type: ignore

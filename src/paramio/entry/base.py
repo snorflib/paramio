@@ -20,11 +20,11 @@ class ImmutableEntry(types.EntryType[InType, OutType]):
         self,
         key: KeyType,
         reader: types.ReaderType[KeyType, T],
-        converter: types.ConverterType[T, OutType],
+        conv: types.ConverterType[T, OutType],
     ) -> None:
         self._key = key
         self._reader = reader
-        self._conv = converter
+        self._conv = conv
 
     def get_value(self) -> OutType:
         return self._conv(self._reader[self._key])
