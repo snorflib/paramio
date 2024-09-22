@@ -1,6 +1,6 @@
 import typing
 
-from . import _field, base, converter, entry, reader, types, view
+from . import _field, base, converter, entry, reader, types, view, _internal
 
 
 def _is_classvar(type_: typing.Any) -> bool:
