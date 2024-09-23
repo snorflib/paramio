@@ -1,7 +1,4 @@
-__all__ = (
-    "SENTINEL",
-    "SentinelType",
-)
+__all__ = ("SENTINEL",)
 
 
-from .sentinel import SENTINEL, SentinelType
+from .sentinel import SENTINEL

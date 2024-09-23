@@ -18,5 +18,4 @@ class _Sentinel(metaclass=_SingletonMeta):
         raise NotImplementedError(f"{type(self).__name__!r} must not be subclassed.")
 
 
-SentinelType = typing.NewType("SentinelType", _Sentinel)
-SENTINEL: typing.Final[SentinelType] = SentinelType(_Sentinel())
+SENTINEL: typing.Final[_Sentinel] = _Sentinel()

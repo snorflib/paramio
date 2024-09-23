@@ -23,7 +23,7 @@ class ImmutableEntry(types.EntryType[InType, OutType]):
         key: KeyType,
         reader: types.ReaderType[KeyType, T],
         conv: types.ConverterType[T, OutType],
-        default: T | _internal.SentinelType = _internal.SENTINEL,
+        default: OutType = _internal.SENTINEL,  # type: ignore
     ) -> None:
         self._key = key
         self._reader = reader
@@ -31,10 +31,13 @@ class ImmutableEntry(types.EntryType[InType, OutType]):
         self._default = default
 
     def get_value(self) -> OutType:
-        if self._default is _internal.SENTINEL:
+        try:
             value = self._reader[self._key]
-        else:
-            value = self._reader.get(self._key, self._default)
+        except BaseException as exc:
+            if self._default is _internal.SENTINEL:
+                raise exc
+            return self._default
+
         return self._conv(value)
 
     def set_value(self, value: InType) -> None:
