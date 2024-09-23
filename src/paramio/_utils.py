@@ -1,6 +1,6 @@
 import typing
 
-from . import _field, base, converter, entry, reader, types, view, _internal
+from . import _field, base, converter, entry, reader, types, view
 
 
 def _is_classvar(type_: typing.Any) -> bool:
@@ -18,7 +18,7 @@ def _create_field(params_high: dict[str, typing.Any], **params_low: typing.Any) 
     return _field.Field(**(params_high | params_low))
 
 
-def create_fields_from_cls(cls: type[typing.Any], **kwds: dict[str, typing.Any]) -> dict[str, _field.Field]:
+def create_fields_from_cls(cls: type[typing.Any], **kwds: typing.Any) -> dict[str, _field.Field]:
     fields = {}
     for name, type_ in cls.__annotations__.items():
         if (value := getattr(cls, name, None)) is None:

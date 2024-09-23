@@ -10,7 +10,7 @@ EntryFactoryType = typing.Callable[[_field.Field], types.EntryType[typing.Any, t
 ViewFactoryType = typing.Callable[[_field.Field], types.ViewType[base.BaseConfig, typing.Any, typing.Any]]
 
 
-class Params(typing.TypedDict):
+class Params(typing.TypedDict, total=False):
     reader: types.ReaderType[str, typing.Any]
     prefix: typing.Any
 
@@ -23,25 +23,19 @@ def paramio(mb_cls: type[Type], /, **kwargs: typing.Unpack[Params]) -> type[base
 
 
 @typing.overload
-def paramio(mb_cls: type[Type], /) -> type[base.BaseConfig]: ...
-
-
-@typing.overload
 def paramio(
     mb_cls: None, /, **kwargs: typing.Unpack[Params]
 ) -> typing.Callable[[type[Type]], type[base.BaseConfig]]: ...
 
 
-@typing.dataclass_transform()
 def paramio(
     mb_cls: type[Type] | None = None,
     /,
-    **kwargs: typing.Any,
+    **kwargs: typing.Unpack[Params],
 ) -> type[base.BaseConfig] | typing.Callable[[type[Type]], type[base.BaseConfig]]:
     entry_factory = kwargs.pop("entry_factory", _utils.default_entry_factory)
     view_factory = kwargs.pop("view_factory", _utils.default_view_factory)
 
-    @typing.dataclass_transform()
     def _inner(cls: type[Type]) -> type[base.BaseConfig]:
         fields = _utils.create_fields_from_cls(cls, **kwargs)
 
