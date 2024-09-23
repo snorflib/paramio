@@ -36,9 +36,10 @@ def create_fields_from_cls(cls: type[typing.Any], **kwds: typing.Any) -> dict[st
 
 def default_entry_factory(field: _field.Field) -> entry.ImmutableEntry[typing.Any, typing.Any]:
     return entry.ImmutableEntry(
-        field.key or field.name,
-        field.reader or reader.Env(),
-        field.conv or converter.Caster(field.type_),
+        key=field.key or field.name,
+        reader=field.reader or reader.Env(),
+        conv=field.conv or converter.Caster(field.type_),
+        default=field.default,
     )
 
 

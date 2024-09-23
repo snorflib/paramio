@@ -7,9 +7,10 @@ from . import _internal, base, types
 
 OutType = typing.TypeVar("OutType")
 
+
 @dataclasses.dataclass(slots=True)
 class Field:
-    default: typing.Any | _internal.SentinelType = _internal.SENTINEL
+    default: typing.Any = _internal.SENTINEL
     prefix: typing.Any | None = None
     key: typing.Any | None = None
     reader: types.ReaderType[typing.Any, typing.Any] | None = None

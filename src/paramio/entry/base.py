@@ -1,7 +1,7 @@
 import typing
 
+from src.paramio import _internal, types
 from src.paramio import exceptions as exc
-from src.paramio import types
 
 KeyType = typing.TypeVar("KeyType")
 InType = typing.TypeVar("InType")
@@ -14,20 +14,28 @@ class ImmutableEntry(types.EntryType[InType, OutType]):
         "_key",
         "_reader",
         "_conv",
+        "_default",
     )
 
     def __init__(
         self,
+        /,
         key: KeyType,
         reader: types.ReaderType[KeyType, T],
         conv: types.ConverterType[T, OutType],
+        default: T | _internal.SentinelType = _internal.SENTINEL,
     ) -> None:
         self._key = key
         self._reader = reader
         self._conv = conv
+        self._default = default
 
     def get_value(self) -> OutType:
-        return self._conv(self._reader[self._key])
+        if self._default is _internal.SENTINEL:
+            value = self._reader[self._key]
+        else:
+            value = self._reader.get(self._key, self._default)
+        return self._conv(value)
 
     def set_value(self, value: InType) -> None:
         raise exc.ReadOnlyEntryError(self)
