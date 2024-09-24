@@ -23,7 +23,6 @@ class FieldParams(typing.Generic[OutType], typing.TypedDict, total=False):
 @dataclasses.dataclass(slots=True)
 class Field:
     default: typing.Any = _internal.SENTINEL
-    prefix: str = ""
     key: str = ""
     reader: types.ReaderType[str, typing.Any] | None = None
     conv: types.ConverterType[typing.Any, typing.Any] | None = None

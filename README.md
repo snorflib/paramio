@@ -5,77 +5,96 @@
 [![License](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 <a href="https://github.com/snorflib/paramio"><img src="https://img.shields.io/github/stars/snorflib/paramio?style=social" alt="Paramio's GitHub repo"></a>
 
-[Advantages](#why-paramio) • [Start](#how-to-start) • [Contributing](#contributing)
+[Advantages](#why-paramio) • [Get Started](#how-to-get-started) • [Contributing](#contributing)
 
 </div>
 
-**Paramio** provides an easy-to-use interface for defining, loading, and managing configurations in Python projects. It supports multiple configuration file formats like JSON, YAML, INI, and TOML, offering a declarative syntax for organizing application parameters.
+**Paramio** offers a seamless interface for defining, loading, and validating configurations within Python projects, enhancing both development efficiency and code reliability.
 
 ## Why Paramio
 
-🧩 **No External Dependencies**. The library is self-contained and doesn't rely on any third-party packages, ensuring compatibility and reducing the risk of dependency conflicts.
+🧩 **No External Dependencies**  
+Paramio is completely self-contained, so you won't need to juggle any third-party packages. This keeps your project lean and hassle-free.
 
-🧙 **Lightweight**. With a minimal footprint, the library adds little overhead to your project, making it ideal for applications where performance and simplicity are key.
+🧙 **Lightweight and Efficient**  
+Paramio focuses solely on configuration management, adding minimal overhead. It's perfect for projects where performance and simplicity are top priorities.
 
-🦋 **Easily Extensible**. Designed with flexibility in mind, the library can be easily extended to meet custom requirements. You can effortlessly add new configuration sources or define custom loaders and parsers.
+🦋 **Highly Extensible**  
+Paramio is designed to be flexible. You can customize every part of the configuration process, from adding new sources to tweaking the class layout—totally up to you!
 
-🛠 **Follows Best Practices**. The library is built according to industry best practices, promoting clean, maintainable, and well-organized code. It encourages a clear separation of configuration logic and application logic.
+## Version Compatibility
 
-## Version compatibility
+| Paramio | Python  | Support  |
+|---------|---------|----------|
+| 0.1.0   | >= 3.10 | ✅ Current |
 
-| Paramio | Python  | Support |
-|---------|---------|---------|
-| 1.x.x   | 3.10 >= | ✅ Current 
+## How to Get Started
 
-## How to start
+Choose your preferred package manager to install Paramio:
 
-```ssh
-// uv
-> uv add paramio
+```bash
+# Using uv
+uv add paramio
 
-// poetry
-> poetry add paramio
+# Using poetry
+poetry add paramio
 
-// pip
-> pip install paramio
+# Using pip
+pip install paramio
 ```
 
 ## Example
 
+**Environment Variables (`.env`):**
+
+```env
+DB_ROLES = ('user', 'root')
+DB_POSTGRES_HOST = "1.1.1.127"
+
+# Password is intentionally omitted
+```
+
+**Python Configuration:**
+
 ```python
-# Load config from JSON
+import dotenv; dotenv.load_dotenv() # Note: Native `env` parsing is not yet supported :(
 
-import paramio
+from src.paramio import Paramio, field, readers
 
 
-@paramio.paramio(prefix="DB_", reader=paramio.JSON(), case_sensitive=False)
-class DataBase:
-    password: str | None
-    username: str | None
-    port: int = 8080
-    host: str = paramio.field(default="localhost", prefix="POSTGRES_")
+class DataBase(
+    Paramio,  # Alternatively, use the `paramio` decorator or `ParamioMeta` metaclass
+    prefix="DB_",
+    reader=readers.Env(case_sensitive=False),
+):
+    roles: tuple[str, ...]
+    password: str | None = None
+    host: str = field(default="localhost", key="POSTGRES_HOST")
 
-    def get_full_url(self) -> str:
-        return f"{self.host}:{self.port}/{self.username}@{self.password}
+    @property
+    def first_role(self) -> str:
+        return self.roles[0]
+
+
+# Capture the current configuration state. This instance remains unaffected by subsequent reader changes.
+# To synchronize other instances, initialize the class with `singleton=True`.
+config = DataBase()
+
+assert config.roles == ("user", "root")
+assert config.password is None
+assert config.host == "1.1.1.127"
+assert config.first_role == "user"
 ```
 
 ## Contributing
 
-Here's how you can contribute:
-
 - [Open an issue](https://github.com/snorflib/paramio/issues) if you believe you've encountered a bug.
 - Make a [pull request](https://github.com/snorflib/paramio/pull) to add new features/make quality-of-life improvements/fix bugs.
 
-<a href="https://github.com/snorflib/paramio/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=snorflib/paramio" />
-</a>
-
-## Repo Activity
+## Repository Activity
 
 ![Repo Activity](https://repobeats.axiom.co/api/embed/e1b457a7bf51281e0c247aa7195101c8ac950d8b.svg "Repobeats analytics image")
 
 ## License
 
-🆓 Feel free to use our library in your commercial and private applications
-
-Package are covered by [MIT Licence](/LICENSE)
+This project is licensed under the [MIT License](/LICENSE).

@@ -29,10 +29,12 @@ def _build_entries_and_views_from_fields(
 ) -> tuple[Entries, Views]:
     entry_factory = kwargs.pop("entry_factory", _utils.default_entry_factory)
     view_factory = kwargs.pop("view_factory", _utils.default_view_factory)
+    prefix = kwargs.pop("prefix", "")
 
     entries: Entries = {}
     views: Views = {}
     for key, field_ in _utils.create_fields_from_cls_dict(classdict, **kwargs).items():
+        field_.key = prefix + field_.key
         entries[key] = entry_factory(field_)
         views[key] = view_factory(field_)
 

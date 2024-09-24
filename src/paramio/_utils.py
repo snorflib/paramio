@@ -4,6 +4,7 @@ import typing
 
 from . import (
     _field,
+    _internal,
     converters,
     entries,
     readers,
@@ -36,7 +37,7 @@ def create_fields_from_cls_dict(
     for name, type_ in classdict.get("__annotations__", {}).items():
         private = name.startswith("_")
 
-        if (value := classdict.get(name, None)) is None:
+        if (value := classdict.get(name, _internal.SENTINEL)) is _internal.SENTINEL:
             if private:
                 continue
             attr = _create_field(kwds, key=name, conv=converters.Caster(type_))
@@ -51,14 +52,14 @@ def create_fields_from_cls_dict(
 
         attr.name = name
         attr.type_ = type_
-
         fields[name] = attr
+
     return fields
 
 
 def default_entry_factory(field: _field.Field) -> entries.ImmutableEntry[typing.Any, var.OutType]:
     return entries.ImmutableEntry(
-        key=field.prefix + (field.key or field.name),
+        key=field.key or field.name,
         reader=field.reader or readers.Env(),
         conv=field.conv or converters.Caster(field.type_),
         default=field.default,

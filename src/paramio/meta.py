@@ -25,9 +25,10 @@ class ParamioMeta(type):
 
     def __call__(self: ParamioMeta, *args: typing.Any, **kwargs: typing.Any) -> typing.Any:
         instance = super().__call__(*args, **kwargs)
-        try:
-            instance.__init_internal__()
-        except AttributeError:
-            instance.__internal__ = {key: entry.get_value() for key, entry in self.__entries__.items()}
-
+        internal_hook = getattr(instance, "__init_internal__", self._default_init_internal)
+        internal_hook(instance)
         return instance
+
+    @staticmethod
+    def _default_init_internal(instance: ParamioMeta) -> None:
+        instance.__internal__ = {key: entry.get_value() for key, entry in type(instance).__entries__.items()}
