@@ -139,6 +139,9 @@ def cast_to_type(
     args = typing.get_args(type_)
     origin = typing.get_origin(type_) or type_
 
+    if origin is typing.ClassVar:
+        return cast_to_type(args[0], value)
+
     if origin is tuple:
         tuple_values = _tuple_convert(value)
         if (args[-1] is Ellipsis) or (args[-1] is types.EllipsisType):

@@ -1,10 +1,11 @@
 import os
 import typing
 
-from src.paramio import ParamioBase, field
+from src.paramio import field, paramio
 
 
-class MockEnvConfig(ParamioBase):
+@paramio
+class MockEnvConfig:
     ROLES: tuple[str] | str | int
     HOST: typing.Annotated[str, "Looks like it's annotated"]
     PORT: int = 8080
@@ -33,7 +34,7 @@ def test_standard_case() -> None:
     assert config.ROLES == ("user",)
     assert config.HOST == "localhost"
     assert config.PORT == 8080
-    assert config.USERNAMES == ['abra']
+    assert config.USERNAMES == ["abra"]
     assert config.PASSWORD == "test123"
     assert config.MY_VAR == "This value wouldn't be affected."
 

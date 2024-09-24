@@ -5,7 +5,6 @@ import typing
 
 from . import (
     _internal,
-    meta,
     types,
 )
 
@@ -33,7 +32,7 @@ class Field:
     name: str = dataclasses.field(init=False)
     type_: typing.Any = dataclasses.field(init=False)
 
-    def __set_name__(self, obj: meta.ParamioMeta, name: str) -> None:
+    def __set_name__(self, obj: type[typing.Any], name: str) -> None:
         self.type_ = obj.__annotations__.get(name, typing.Any)
         self.name = name
 

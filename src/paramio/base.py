@@ -1,11 +1,18 @@
 from __future__ import annotations
 
+import types as btn_types
 import typing
 
-from . import meta
+from . import types
+
+MappingProxyType = btn_types.MappingProxyType
 
 
-class ParamioBase(metaclass=meta.ParamioMeta):
+class Paramio:
+    __is_paramio__: typing.ClassVar[bool] = True
+    __entries__: typing.ClassVar[MappingProxyType[str, types.EntryType[typing.Any, typing.Any]]] = MappingProxyType({})
+    __views__: typing.ClassVar[tuple[str, ...]] = ()
+
     __slots__ = ("__internal__",)
     __internal__: dict[str, typing.Any]
 
@@ -13,12 +20,6 @@ class ParamioBase(metaclass=meta.ParamioMeta):
         instance = super().__new__(cls, *args, **kwargs)
         instance.__init_internal__()
         return instance
-
-    def asdict(self) -> dict[str, typing.Any]:
-        return self.__internal__
-
-    def __eq__(self, other: typing.Any) -> bool:
-        return hasattr(other, "__internal__") and (self.__internal__ == other.__internal__)
 
     def __init_internal__(self) -> None:
         self.__internal__ = {key: entry.get_value() for key, entry in type(self).__entries__.items()}

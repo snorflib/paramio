@@ -4,6 +4,7 @@ import typing
 
 from . import (
     _field,
+    base,
     converters,
     entries,
     readers,
@@ -53,7 +54,7 @@ def create_fields_from_cls_dict(
     return fields
 
 
-def default_entry_factory(field: _field.Field) -> entries.ImmutableEntry[var.InType, var.OutType]:
+def default_entry_factory(field: _field.Field) -> entries.ImmutableEntry[base.Paramio, var.OutType]:
     return entries.ImmutableEntry(
         key=field.prefix + (field.key or field.name),
         reader=field.reader or readers.Env(),
@@ -62,8 +63,8 @@ def default_entry_factory(field: _field.Field) -> entries.ImmutableEntry[var.InT
     )
 
 
-def default_view_factory(field: _field.Field) -> views.InvokerView[typing.Any, var.InType, var.OutType]:
-    def getter(instance: typing.Any, name: str) -> var.OutType:
+def default_view_factory(field: _field.Field) -> views.InvokerView[base.Paramio, var.InType, var.OutType]:
+    def getter(instance: base.Paramio, name: str) -> var.OutType:
         return typing.cast(var.OutType, instance.__internal__[name])
 
     def on_display(value: var.OutType) -> str:  # type: ignore[misc]
