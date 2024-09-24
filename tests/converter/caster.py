@@ -2,7 +2,7 @@ from typing import Any, Literal, Never, NoReturn, NotRequired, Optional, Require
 
 import pytest
 
-from src.paramio.converter import utils
+from src.paramio.converter import utils  # type: ignore
 
 
 def test_cast_to_int() -> None:
