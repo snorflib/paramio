@@ -2,7 +2,7 @@ from typing import Any, Literal, Never, NoReturn, NotRequired, Optional, Require
 
 import pytest
 
-from src.paramio.converter import utils  # type: ignore
+from src.paramio.converters import utils
 
 
 def test_cast_to_int() -> None:
@@ -40,7 +40,7 @@ def test_cast_to_list_int() -> None:
 
 
 def test_cast_to_tuple_int() -> None:
-    assert utils.cast_to_type(tuple[int, ...], ("1", "2", "3")) == (1, 2, 3)
+    assert utils.cast_to_type(tuple[int, ...], '("1", "2", "3")') == (1, 2, 3)
 
 
 def test_cast_to_set_float() -> None:

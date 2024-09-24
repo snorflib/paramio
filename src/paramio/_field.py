@@ -18,6 +18,7 @@ class FieldParams(typing.Generic[OutType], typing.TypedDict, total=False):
     key: str
     reader: types.ReaderType[str, typing.Any] | None
     conv: types.ConverterType[typing.Any, typing.Any] | None
+    secret: bool
 
 
 @dataclasses.dataclass(slots=True)
@@ -38,4 +39,4 @@ class Field:
 
 
 def field(**kwargs: typing.Unpack[FieldParams[OutType]]) -> OutType:
-    return Field(**kwargs())  # type: ignore
+    return Field(**kwargs)  # type: ignore

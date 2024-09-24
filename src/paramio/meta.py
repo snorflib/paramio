@@ -28,6 +28,7 @@ class ParamioMeta(type):
 
         entries, views = {}, {}
         for key, field_ in fields.items():
+            field_.__set_name__(type("BLYAT", (), {"__annotations__": classdict.get("__annotations", {})}), key)  # type: ignore
             entries[key] = entry_factory(field_)
             views[key] = view_factory(field_)
 

@@ -142,7 +142,7 @@ def cast_to_type(
 
     if origin is tuple:
         tuple_values = _tuple_convert(value)
-        if (args[1] is Ellipsis) or (args[1] is types.EllipsisType):
+        if (args[-1] is Ellipsis) or (args[-1] is types.EllipsisType):
             return tuple(cast_to_type(args[0], val) for val in tuple_values)
         if len(args) != len(tuple_values):
             raise TypeError(f"Cannot cast {len(tuple_values)} values to a tuple with {len(args)} values.")
@@ -175,7 +175,7 @@ def cast_to_type(
             raise TypeError(f"None of the cast types in `{type_!r}` satisfied the value {value!r}")
 
     try:
-        if isinstance(value, type_):
+        if isinstance(value, origin):
             return value
     except BaseException:
         ...
