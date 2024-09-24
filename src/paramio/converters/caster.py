@@ -1,6 +1,6 @@
 import typing
 
-from src.paramio import types
+from src.paramio import exceptions, types
 
 from . import utils
 
@@ -18,6 +18,8 @@ class Caster(types.ConverterType[ValueType, CastType]):
         try:
             return utils.cast_to_type(self._cast_to, value)
         except IndexError as exc:
-            raise exc
+            raise exceptions.CastFailedError(
+                self._cast_to, value, "Perhaps you didn't specify generics correctly?"
+            ) from exc
         except BaseException as exc:
-            raise exc
+            raise exceptions.CastFailedError(self._cast_to, value) from exc
