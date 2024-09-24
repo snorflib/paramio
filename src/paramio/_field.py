@@ -3,7 +3,11 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-from . import _internal, base, types
+from . import (
+    _internal,
+    base,
+    types,
+)
 
 OutType = typing.TypeVar("OutType")
 
@@ -11,8 +15,8 @@ OutType = typing.TypeVar("OutType")
 @dataclasses.dataclass(slots=True)
 class Field:
     default: typing.Any = _internal.SENTINEL
-    key: typing.Any | None = None
-    reader: types.ReaderType[typing.Any, typing.Any] | None = None
+    key: str = ""
+    reader: types.ReaderType[str, typing.Any] | None = None
     conv: types.ConverterType[typing.Any, typing.Any] | None = None
 
     name: str = dataclasses.field(init=False)
