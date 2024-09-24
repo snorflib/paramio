@@ -1,10 +1,15 @@
 [project]
-name = "typeconfig"
+name = "paramio"
 version = "0.1.0"
-description = "Add your description here"
+description = "lightweight, dependency-free Python library for easy configuration management."
+authors = [
+  { name = "snorflib (<https://github.com/snorflib>)"},
+]
+license = "MIT"
+requires-python = ">=3.10"
 readme = "README.md"
-requires-python = ">=3.12"
 dependencies = []
+
 
 [tool.uv]
 dev-dependencies = [
@@ -62,3 +67,7 @@ exclude = [".venv"]
 
 [tool.pytest.ini_options]
 python_files = "tests/*.py"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
