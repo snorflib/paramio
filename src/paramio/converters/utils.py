@@ -110,7 +110,6 @@ def cast_to_type(
         raise TypeError(f"{value!r} cannot be casted to a bottom type.")
     elif isinstance(type_, str):
         type_ = _get_type_from_string(type_, context)
-
     type_ = _remove_annotated(type_)
 
     if type_ in BuiltInPrimitives:

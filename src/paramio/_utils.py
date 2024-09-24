@@ -67,10 +67,17 @@ def default_view_factory(field: _field.Field) -> views.InvokerView[typing.Any, v
         return typing.cast(var.OutType, instance.__internal__[name])
 
     def on_display(value: var.OutType) -> str:  # type: ignore[misc]
+        cast_to_str = True
         if not isinstance(value, str):
-            return str(value)
+            cast_to_str = False
+            value = str(value)  # type: ignore
         if field.secret is True:
-            value = value[: min(15, len(value) // 2)] + "***"  # type: ignore
-        return f'"{value}"'
+            length = len(value)  # type: ignore
+            left = min(5, length // 3)
+            right = max(length - 5, length - (length // 3))
+            value = value[:left] + "..." + value[right:]  # type: ignore
+        if cast_to_str:
+            return f'"{value}"'
+        return str(value)
 
     return views.InvokerView(getter, None, on_display)
