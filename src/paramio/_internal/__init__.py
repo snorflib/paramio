@@ -1,5 +1,10 @@
-__all__ = ("SENTINEL",)
+__all__ = (
+    "SENTINEL",
+    "SingletonMeta",
+)
 
 import typing
+
+from .singleton import SingletonMeta
 
 SENTINEL: typing.Final[object] = object()

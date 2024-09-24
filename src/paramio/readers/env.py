@@ -22,7 +22,6 @@ class Env(types.ReaderType[str, str]):
     __slots__ = (
         "case_sensitive",
         "encoding",
-        "_data",
     )
 
     def __init__(
@@ -32,14 +31,15 @@ class Env(types.ReaderType[str, str]):
     ) -> None:
         self.case_sensitive = case_sensitive
         self.encoding = encoding
-        self._data = _build_data(case_sensitive, encoding)
 
     def __getitem__(self, key: str) -> str:
-        return self._data[key if self.case_sensitive else key.lower()]
+        data = _build_data(self.case_sensitive, self.encoding)
+        return data[key if self.case_sensitive else key.lower()]
 
     def get(self, key: str, default: DefaultType) -> str | DefaultType:
+        data = _build_data(self.case_sensitive, self.encoding)
         key = key if self.case_sensitive else key.lower()
-        return self._data.get(key, default)
+        return data.get(key, default)
 
     def __repr__(self) -> str:
         return type(self).__name__

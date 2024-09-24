@@ -1,7 +1,7 @@
 import types as btn_types
 import typing
 
-from . import _field, _utils, base, types
+from . import _field, _internal, _utils, base, types
 
 Type = typing.TypeVar("Type")
 
@@ -12,8 +12,6 @@ ViewFactoryType = typing.Callable[[_field.Field], types.ViewType[base.BaseConfig
 
 class Params(typing.TypedDict, total=False):
     reader: types.ReaderType[str, typing.Any]
-    prefix: typing.Any
-
     entry_factory: EntryFactoryType
     view_factory: ViewFactoryType
 
@@ -31,11 +29,12 @@ def paramio(
 def paramio(
     mb_cls: type[Type] | None = None,
     /,
+    prefix: str = "",
+    singleton: bool = False,
     **kwargs: typing.Unpack[Params],
 ) -> type[base.BaseConfig] | typing.Callable[[type[Type]], type[base.BaseConfig]]:
     entry_factory = kwargs.pop("entry_factory", _utils.default_entry_factory)
     view_factory = kwargs.pop("view_factory", _utils.default_view_factory)
-    prefix = kwargs.pop("prefix", "")
 
     def _inner(cls: type[Type]) -> type[base.BaseConfig]:
         fields = _utils.create_fields_from_cls(cls, **kwargs)
@@ -48,10 +47,13 @@ def paramio(
             views[key] = view_factory(field)
 
         entries |= cls.__dict__.get("__entries__", {})
-        return type(
+
+        metacls = _internal.SingletonMeta if singleton else type
+        new_cls = metacls(
             cls.__name__,
             (base.BaseConfig, *cls.__mro__[1:]),
             cls.__dict__ | {"__entries__": btn_types.MappingProxyType(entries), **views},
         )
+        return typing.cast(type[base.BaseConfig], new_cls)
 
     return _inner(mb_cls) if mb_cls else _inner
