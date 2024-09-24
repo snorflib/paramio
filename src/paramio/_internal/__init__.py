@@ -1,4 +1,5 @@
 __all__ = ("SENTINEL",)
 
+import typing
 
-from .sentinel import SENTINEL
+SENTINEL: typing.Final[object] = object()
