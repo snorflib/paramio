@@ -33,3 +33,7 @@ class BaseView(types.ViewType[var.Inst, var.InType, var.OutType]):
     @abc.abstractmethod
     def _set_value(self, instance: var.Inst, value: var.InType) -> None:
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def console_printable(self, instance: var.Inst, owner: type[var.Inst]) -> str:
+        raise NotImplementedError

@@ -1,15 +1,6 @@
 import typing
 
-from . import (
-    _field,
-    base,
-    converters,
-    entries,
-    readers,
-    types,
-    views,
-)
-from .types import var
+from . import _field, converters, types
 
 
 def _is_classvar(type_: typing.Any) -> bool:
@@ -41,19 +32,3 @@ def create_fields_from_cls(cls: type[typing.Any], **kwds: typing.Any) -> dict[st
 
         fields[name] = attr
     return fields
-
-
-def default_entry_factory(field: _field.Field) -> entries.ImmutableEntry[var.InType, var.OutType]:
-    return entries.ImmutableEntry(
-        key=field.key or field.name,
-        reader=field.reader or readers.Env(),
-        conv=field.conv or converters.Caster(field.type_),
-        default=field.default,
-    )
-
-
-def default_view_factory(field: _field.Field) -> views.InvokerView[base.BaseConfig, var.InType, var.OutType]:
-    def getter(instance: base.BaseConfig, name: str) -> var.OutType:
-        return instance.__data__[name]  # type: ignore
-
-    return views.InvokerView(getter)

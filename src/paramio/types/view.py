@@ -20,3 +20,7 @@ class ViewType(typing.Protocol[var.Inst, var.InType, var.OutType]):
     @abc.abstractmethod
     def __set__(self, instance: var.Inst, value: var.InType) -> None:
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def console_printable(self, instance: var.Inst, owner: type[var.Inst]) -> str:
+        raise NotImplementedError
