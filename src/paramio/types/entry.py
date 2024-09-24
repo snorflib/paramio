@@ -1,15 +1,14 @@
 import abc
 import typing
 
-InType = typing.TypeVar("InType", contravariant=True)
-OutType = typing.TypeVar("OutType", covariant=True)
+from . import var
 
 
-class EntryType(typing.Protocol[InType, OutType]):
+class EntryType(typing.Protocol[var.InType, var.OutType]):
     @abc.abstractmethod
-    def get_value(self) -> OutType:
+    def get_value(self) -> var.OutType:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def set_value(self, __value: InType) -> None:
+    def set_value(self, __value: var.InType) -> None:
         raise NotImplementedError

@@ -3,7 +3,6 @@ import types
 import typing
 
 CastType = typing.TypeVar("CastType")
-T = typing.TypeVar("T")
 
 
 def _bool_convert(value: typing.Any) -> bool:

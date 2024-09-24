@@ -5,7 +5,6 @@ import typing
 
 from src.paramio import types
 
-Inst = typing.TypeVar("Inst", bound="BaseConfig")
 MappingProxy = btn_types.MappingProxyType
 
 
@@ -15,7 +14,7 @@ class BaseConfig:
     __slots__ = ("__data__",)
     __data__: dict[str, typing.Any]
 
-    def __new__(cls: type[Inst], *args: typing.Any, **kwargs: typing.Any) -> Inst:
+    def __new__(cls: type[BaseConfig], *args: typing.Any, **kwargs: typing.Any) -> BaseConfig:
         instance = super().__new__(cls, *args, **kwargs)
         instance.__init_data__()
         return instance

@@ -1,11 +1,10 @@
 import abc
 import typing
 
-ValueType = typing.TypeVar("ValueType", contravariant=True)
-ReturnType = typing.TypeVar("ReturnType", covariant=True)
+from . import var
 
 
-class ConverterType(typing.Protocol[ValueType, ReturnType]):
+class ConverterType(typing.Protocol[var.InType, var.OutType]):
     @abc.abstractmethod
-    def __call__(self, __value: ValueType) -> ReturnType:
+    def __call__(self, __value: var.InType) -> var.OutType:
         raise NotImplementedError

@@ -3,22 +3,20 @@ from __future__ import annotations
 import abc
 import typing
 
-Inst = typing.TypeVar("Inst", contravariant=True)
-InType = typing.TypeVar("InType", contravariant=True)
-OutType = typing.TypeVar("OutType", covariant=True)
+from . import var
 
 
 @typing.runtime_checkable
-class ViewType(typing.Protocol[Inst, InType, OutType]):
+class ViewType(typing.Protocol[var.Inst, var.InType, var.OutType]):
     @typing.overload
-    def __get__(self, instance: None, owner: type[Inst]) -> typing.Self: ...
+    def __get__(self, instance: None, owner: type[var.Inst]) -> typing.Self: ...
     @typing.overload
-    def __get__(self, instance: Inst, owner: type[Inst]) -> OutType: ...
+    def __get__(self, instance: var.Inst, owner: type[var.Inst]) -> var.OutType: ...
 
     @abc.abstractmethod
-    def __get__(self, instance: Inst | None, owner: type[Inst]) -> OutType | typing.Self:
+    def __get__(self, instance: var.Inst | None, owner: type[var.Inst]) -> var.OutType | typing.Self:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def __set__(self, instance: Inst, value: InType) -> None:
+    def __set__(self, instance: var.Inst, value: var.InType) -> None:
         raise NotImplementedError

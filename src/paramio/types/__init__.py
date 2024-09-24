@@ -1,7 +1,7 @@
 __all__ = (
+    "ConverterType",
     "ViewType",
     "ReaderType",
-    "ConverterType",
     "EntryType",
 )
 

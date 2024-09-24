@@ -1,20 +1,16 @@
-import typing
-
 from src.paramio import exceptions, types
+from src.paramio.types import var
 
 from . import utils
 
-ValueType = typing.TypeVar("ValueType", contravariant=True)
-CastType = typing.TypeVar("CastType", covariant=True)
 
-
-class Caster(types.ConverterType[ValueType, CastType]):
+class Caster(types.ConverterType[var.InType, var.OutType]):
     __slots__ = ("_cast_to",)
 
-    def __init__(self, cast_to: type[CastType]) -> None:
+    def __init__(self, cast_to: type[var.OutType]) -> None:
         self._cast_to = cast_to
 
-    def __call__(self, value: ValueType) -> CastType:
+    def __call__(self, value: var.InType) -> var.OutType:
         try:
             return utils.cast_to_type(self._cast_to, value)
         except IndexError as exc:

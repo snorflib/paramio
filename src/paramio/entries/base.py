@@ -1,15 +1,9 @@
-import typing
-
 from src.paramio import _internal, types
 from src.paramio import exceptions as exc
-
-KeyType = typing.TypeVar("KeyType")
-InType = typing.TypeVar("InType")
-OutType = typing.TypeVar("OutType")
-T = typing.TypeVar("T")
+from src.paramio.types import var
 
 
-class ImmutableEntry(types.EntryType[InType, OutType]):
+class ImmutableEntry(types.EntryType[var.InType, var.OutType]):
     __slots__ = (
         "_key",
         "_reader",
@@ -20,17 +14,17 @@ class ImmutableEntry(types.EntryType[InType, OutType]):
     def __init__(
         self,
         /,
-        key: KeyType,
-        reader: types.ReaderType[KeyType, T],
-        conv: types.ConverterType[T, OutType],
-        default: OutType = _internal.SENTINEL,  # type: ignore
+        key: var.KeyType,
+        reader: types.ReaderType[var.KeyType, var.RawType],
+        conv: types.ConverterType[var.RawType, var.OutType],
+        default: var.OutType = _internal.SENTINEL,  # type: ignore
     ) -> None:
         self._key = key
         self._reader = reader
         self._conv = conv
         self._default = default
 
-    def get_value(self) -> OutType:
+    def get_value(self) -> var.OutType:
         try:
             value = self._reader[self._key]
         except BaseException as exc:
@@ -40,7 +34,7 @@ class ImmutableEntry(types.EntryType[InType, OutType]):
 
         return self._conv(value)
 
-    def set_value(self, value: InType) -> None:
+    def set_value(self, value: var.InType) -> None:
         raise exc.ReadOnlyEntryError(self)
 
     def __repr__(self) -> str:
