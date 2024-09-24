@@ -11,7 +11,6 @@ OutType = typing.TypeVar("OutType")
 @dataclasses.dataclass(slots=True)
 class Field:
     default: typing.Any = _internal.SENTINEL
-    prefix: typing.Any | None = None
     key: typing.Any | None = None
     reader: types.ReaderType[typing.Any, typing.Any] | None = None
     conv: types.ConverterType[typing.Any, typing.Any] | None = None

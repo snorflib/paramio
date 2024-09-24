@@ -35,12 +35,15 @@ def paramio(
 ) -> type[base.BaseConfig] | typing.Callable[[type[Type]], type[base.BaseConfig]]:
     entry_factory = kwargs.pop("entry_factory", _utils.default_entry_factory)
     view_factory = kwargs.pop("view_factory", _utils.default_view_factory)
+    prefix = kwargs.pop("prefix", "")
 
     def _inner(cls: type[Type]) -> type[base.BaseConfig]:
         fields = _utils.create_fields_from_cls(cls, **kwargs)
 
         entries, views = {}, {}
         for key, field in fields.items():
+            field.key = prefix + field.key
+
             entries[key] = entry_factory(field)
             views[key] = view_factory(field)
 
