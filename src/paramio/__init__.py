@@ -3,9 +3,11 @@ __all__ = (
     "Field",
     "field",
     "Paramio",
+    "ParamioMeta",
 )
 
 
 from ._field import Field, field
 from .base import Paramio
 from .factory import paramio
+from .meta import ParamioMeta

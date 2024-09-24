@@ -32,10 +32,6 @@ class Field:
     name: str = dataclasses.field(init=False)
     type_: typing.Any = dataclasses.field(init=False)
 
-    def __set_name__(self, obj: type[typing.Any], name: str) -> None:
-        self.type_ = obj.__annotations__.get(name, typing.Any)
-        self.name = name
-
 
 def field(**kwargs: typing.Unpack[FieldParams[OutType]]) -> OutType:
     return Field(**kwargs)  # type: ignore
