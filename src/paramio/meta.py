@@ -5,9 +5,6 @@ import typing
 
 from . import _field, _internal, _utils, types
 
-EntryFactoryType = typing.Callable[[_field.Field], types.EntryType[typing.Any, typing.Any]]
-ViewFactoryType = typing.Callable[[_field.Field], types.ViewType["ParamioMeta", typing.Any, typing.Any]]
-
 
 class ParamioMeta(type):
     __entries__: typing.ClassVar[btn_types.MappingProxyType[str, types.EntryType[typing.Any, typing.Any]]]
@@ -18,12 +15,16 @@ class ParamioMeta(type):
         name: str,
         bases: tuple[type[ParamioMeta]],
         classdict: dict[str, typing.Any],
-        entry_factory: EntryFactoryType,
-        view_factory: ViewFactoryType,
+        entry_factory: typing.Callable[
+            [_field.Field], types.EntryType[typing.Any, typing.Any]
+        ] = _utils.default_entry_factory,
+        view_factory: typing.Callable[
+            [_field.Field], types.ViewType[ParamioMeta, typing.Any, typing.Any]
+        ] = _utils.default_view_factory,
         singleton: bool = False,
         **kwargs: typing.Unpack[_field.FieldParams[typing.Any]],
     ) -> ParamioMeta:
-        fields = _utils.create_fields_from_cls(cls, **kwargs)
+        fields = _utils.create_fields_from_cls_dict(classdict, **kwargs)
 
         entries, views = {}, {}
         for key, field_ in fields.items():
@@ -33,11 +34,13 @@ class ParamioMeta(type):
         entries |= classdict.pop("__entries__", {})
 
         metacls = _internal.SingletonMeta if singleton else type
-        new_cls = metacls(
+        new_cls = metacls.__new__(
+            cls,
             name,
             bases,
             classdict
-            | {"__entries__": btn_types.MappingProxyType(entries), **views}
-            | {"__views__": list(views.keys())},
+            | {"__entries__": btn_types.MappingProxyType(entries)}
+            | {"__views__": tuple(views.keys())}
+            | views,
         )
-        return typing.cast(ParamioMeta, new_cls)
+        return new_cls

@@ -2,45 +2,10 @@ from __future__ import annotations
 
 import typing
 
-from . import (
-    _field,
-    converters,
-    entries,
-    meta,
-    readers,
-    views,
-)
-from .types import var
+from . import meta
 
 
-def default_entry_factory(field: _field.Field) -> entries.ImmutableEntry[var.InType, var.OutType]:
-    return entries.ImmutableEntry(
-        key=field.prefix + (field.key or field.name),
-        reader=field.reader or readers.Env(),
-        conv=field.conv or converters.Caster(field.type_),
-        default=field.default,
-    )
-
-
-def default_view_factory(field: _field.Field) -> views.InvokerView[ParamioBase, var.InType, var.OutType]:
-    def getter(instance: ParamioBase, name: str) -> var.OutType:
-        return typing.cast(var.OutType, instance.__internal__[name])
-
-    def on_display(value: var.OutType) -> str:  # type: ignore[misc]
-        val_str = str(value)
-        if field.secret is False:
-            return val_str
-
-        return val_str[: min(15, len(val_str) // 2)] + "***"
-
-    return views.InvokerView(getter, None, on_display)
-
-
-class ParamioBase(
-    metaclass=meta.ParamioMeta,
-    view_factory=default_view_factory,
-    entry_factory=default_entry_factory,
-):
+class ParamioBase(metaclass=meta.ParamioMeta):
     __slots__ = ("__internal__",)
     __internal__: dict[str, typing.Any]
 
@@ -64,6 +29,6 @@ class ParamioBase(
             if (attr := getattr(type(self), name, None)) is None:
                 continue
 
-            view_values.append(f"{name}={attr.console_printable(self)}")
+            view_values.append(f"{name}={attr.console_printable(self, type(self))}")
 
-        return f"{type(self)}({', '.join(view_values)})"
+        return f"{type(self).__name__}({', '.join(view_values)})"
