@@ -67,6 +67,9 @@ exclude = [".venv"]
 
 [tool.pytest.ini_options]
 python_files = "tests/*.py"
+pythonpath = [
+  ".", "src",
+]
 
 [build-system]
 requires = ["hatchling"]

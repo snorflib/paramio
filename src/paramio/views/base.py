@@ -4,20 +4,18 @@ import abc
 import typing
 
 from src.paramio import types
+from src.paramio._internal import typing as my_typing
 from src.paramio.types import var
-
-if typing.TYPE_CHECKING:
-    import typing_extensions as t_ext
 
 
 class BaseView(types.ViewType[var.Inst, var.InType, var.OutType]):
     __slots__ = ("_name",)
 
     @typing.overload
-    def __get__(self, instance: None, owner: type[var.Inst]) -> t_ext.Self: ...
+    def __get__(self, instance: None, owner: type[var.Inst]) -> my_typing.Self: ...
     @typing.overload
     def __get__(self, instance: var.Inst, owner: type[var.Inst]) -> var.OutType: ...
-    def __get__(self, instance: var.Inst | None, owner: type[var.Inst]) -> var.OutType | t_ext.Self:
+    def __get__(self, instance: var.Inst | None, owner: type[var.Inst]) -> var.OutType | my_typing.Self:
         if instance is None:
             return self
 

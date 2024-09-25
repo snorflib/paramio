@@ -3,7 +3,7 @@ from __future__ import annotations
 import types as btn_types
 import typing
 
-from . import meta
+from src.paramio import meta
 
 MappingProxyType = btn_types.MappingProxyType
 

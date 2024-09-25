@@ -2,26 +2,24 @@ from __future__ import annotations
 
 import typing
 
-from . import builder, meta
-
-if typing.TYPE_CHECKING:
-    import typing_extensions as t_ext
+from src.paramio import builder, meta
+from src.paramio._internal import typing as my_typing
 
 
 @typing.overload
-def paramio(maybe_cls: type[typing.Any], /, **kwargs: t_ext.Unpack[builder.Params]) -> meta.ParamioMeta: ...
+def paramio(maybe_cls: type[typing.Any], /, **kwargs: my_typing.Unpack[builder.Params]) -> meta.ParamioMeta: ...
 
 
 @typing.overload
 def paramio(
-    maybe_cls: None = None, /, **kwargs: t_ext.Unpack[builder.Params]
+    maybe_cls: None = None, /, **kwargs: my_typing.Unpack[builder.Params]
 ) -> typing.Callable[[type[typing.Any]], meta.ParamioMeta]: ...
 
 
 def paramio(
     maybe_cls: type[typing.Any] | None = None,
     /,
-    **kwargs: t_ext.Unpack[builder.Params],
+    **kwargs: my_typing.Unpack[builder.Params],
 ) -> meta.ParamioMeta | typing.Callable[[type[typing.Any]], meta.ParamioMeta]:
     def _inner(cls: type[typing.Any]) -> meta.ParamioMeta:
         return builder.cls_builder(

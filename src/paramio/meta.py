@@ -1,12 +1,9 @@
 from __future__ import annotations
 
 import types as btn_types
-import typing
 
-from . import builder, types
-
-if typing.TYPE_CHECKING:
-    import typing_extensions as t_ext
+from src.paramio import builder, types
+from src.paramio._internal import typing
 
 
 class ParamioMeta(type):
@@ -22,7 +19,7 @@ class ParamioMeta(type):
         name: str,
         bases: tuple[type[ParamioMeta]],
         classdict: dict[str, typing.Any],
-        **kwargs: t_ext.Unpack[builder.Params],
+        **kwargs: typing.Unpack[builder.Params],
     ) -> ParamioMeta:
         return builder.cls_builder(name, bases, classdict, metacls=cls, **kwargs)
 

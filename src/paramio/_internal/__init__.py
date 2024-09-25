@@ -3,8 +3,8 @@ __all__ = (
     "SingletonMeta",
 )
 
-import typing
+import typing as _typing
 
 from .singleton import SingletonMeta
 
-SENTINEL: typing.Final[object] = object()
+SENTINEL: _typing.Final[object] = object()

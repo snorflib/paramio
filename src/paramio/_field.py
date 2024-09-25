@@ -1,15 +1,9 @@
 from __future__ import annotations
 
 import dataclasses
-import typing
 
-from . import (
-    _internal,
-    types,
-)
-
-if typing.TYPE_CHECKING:
-    import typing_extensions as t_ext
+from src.paramio import _internal, types
+from src.paramio._internal import typing
 
 OutType = typing.TypeVar("OutType")
 
@@ -34,5 +28,5 @@ class FieldParams(typing.TypedDict, total=False):
     secret: bool
 
 
-def field(default: OutType, **kwargs: t_ext.Unpack[FieldParams]) -> OutType:
+def field(default: OutType, **kwargs: typing.Unpack[FieldParams]) -> OutType:
     return Field(**kwargs)  # type: ignore
