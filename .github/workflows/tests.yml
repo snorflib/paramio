@@ -31,7 +31,7 @@ jobs:
 
     - name: install dependencies
       run: |
-        uv sync --all-extras --dev
+        uv sync --dev
         
     - name: ruff | mypy checks
       run: |
@@ -40,7 +40,7 @@ jobs:
       
     - name: run tests
       run: |
-        pytest -s tests/ --tb=long --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+        uv run pytest -s tests/ --tb=long --junitxml=junit/test-results-${{ matrix.python-version }}.xml
 
     - name: upload test results
       uses: actions/upload-artifact@v4
