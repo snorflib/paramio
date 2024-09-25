@@ -18,5 +18,5 @@ def test_no_flag() -> None:
     assert tools.get_flag_value("-config") is None
 
 
-def test_fail() -> None:
+def test_fail_new() -> None:
     raise ValueError
