@@ -11,7 +11,7 @@ on:
 
 jobs:
   tests:
-    name: Run Linting | Type Checking | Tests
+    name: tests | static checking | linting
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -42,7 +42,7 @@ jobs:
       
     - name: run tests
       run: |
-        uv run pytest -s tests/ --tb=long --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+        uv run pytest -s tests/ --tb=long --junitxml=junit/test-results-${{ matrix.os }}-${{ matrix.python-version }}.xml
 
     - name: upload test results
       uses: actions/upload-artifact@v4
