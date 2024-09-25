@@ -8,6 +8,7 @@ os.environ["five"] = "5"
 os.environ["siX"] = "6"
 
 
+@pytest.mark.skipif(os.name == "nt", reason="Environment variables are not case sensitivity on windows.")  # type: ignore
 def test_env_case_sensitive() -> None:
     env = readers.Env(case_sensitive=True)
     assert env["five"] == "5"

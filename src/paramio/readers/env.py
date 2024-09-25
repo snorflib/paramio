@@ -4,11 +4,12 @@ import typing
 from src.paramio import types
 
 DefaultType = typing.TypeVar("DefaultType")
+WINDOWS: typing.Final[bool] = os.name == "nt"
 
 
 def _build_data(case_sensitive: bool = False, encoding: str = "utf-8") -> dict[str, str]:
-    if not hasattr(os, "environb"):
-        return {(key if case_sensitive else key.lower()): value for key, value in os.environ.items()}
+    if WINDOWS:
+        return {key: value for key, value in os.environ.items()}
 
     data = {}
     for key_bytes, value_bytes in os.environb.items():
@@ -29,7 +30,7 @@ class Env(types.ReaderType[str, str]):
         case_sensitive: bool = False,
         encoding: str = "utf-8",
     ) -> None:
-        self.case_sensitive = case_sensitive
+        self.case_sensitive = False if WINDOWS else case_sensitive
         self.encoding = encoding
 
     def __getitem__(self, key: str) -> str:

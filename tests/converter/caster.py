@@ -125,7 +125,7 @@ def test_cast_to_annotated() -> None:
     assert utils.cast_to_type(Annotated[int, "metadata"], "123") == 123
 
 
-@pytest.mark.skipif(sys.version_info < (3, 11), reason="Incompatible python version.")
+@pytest.mark.skipif(sys.version_info < (3, 11), reason="Incompatible python version.")  # type: ignore
 def test_cast_with_not_required() -> None:
     class Data(TypedDict):
         id: Required[int]
@@ -206,7 +206,7 @@ def test_cast_with_nested_unions() -> None:
     assert utils.cast_to_type(Type, value) == [1, ["a", "b"], 2]
 
 
-@pytest.mark.skipif(sys.version_info < (3, 11), reason="Incompatible python version.")
+@pytest.mark.skipif(sys.version_info < (3, 11), reason="Incompatible python version.")  # type: ignore
 def test_cast_with_required_and_not_required() -> None:
     class Data(TypedDict, total=True):
         a: int
