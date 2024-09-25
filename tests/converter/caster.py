@@ -1,7 +1,7 @@
 import sys
 from typing import TYPE_CHECKING, Any, Literal, NoReturn, Optional, TypedDict
 
-if sys.version_info < (3, 11):
+if sys.version_info < (3, 12):
     Never = NoReturn
 
 if TYPE_CHECKING:
