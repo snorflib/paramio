@@ -1,0 +1,31 @@
+name: Publish Package
+
+on:
+  release:
+    types: [published]
+    branches:
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: install uv
+      uses: astral-sh/setup-uv@v2
+
+    - name: install dependencies
+      run: |
+        uv sync --no-dev
+
+    - name: build package
+      run: uv build
+  
+    - name: publish package
+      run: |
+        uv publish --username __token__ --password ${{ secrets.PYPI_TEST_API_TOKEN }}
