@@ -9,6 +9,10 @@ from . import (
     types,
 )
 
+if typing.TYPE_CHECKING:
+    import typing_extensions as t_ext
+
+
 Type = typing.TypeVar("Type", bound=type)
 
 Entries = dict[str, types.EntryType[typing.Any, typing.Any]]
@@ -25,7 +29,7 @@ class Params(typing.TypedDict, total=False):
 
 def _build_entries_and_views_from_fields(
     classdict: dict[str, typing.Any],
-    **kwargs: typing.Unpack[Params],
+    **kwargs: t_ext.Unpack[Params],
 ) -> tuple[Entries, Views]:
     entry_factory = kwargs.pop("entry_factory", _utils.default_entry_factory)
     view_factory = kwargs.pop("view_factory", _utils.default_view_factory)
@@ -61,7 +65,7 @@ def cls_builder(
     bases: tuple[typing.Any, ...],
     classdict: dict[str, typing.Any],
     metacls: type[Type] = type,  # type: ignore
-    **kwargs: typing.Unpack[Params],
+    **kwargs: t_ext.Unpack[Params],
 ) -> Type:
     entries, views = _build_entries_and_views_from_fields(classdict, **kwargs)
     new_dct = _build_new_classdict(classdict, entries, views)

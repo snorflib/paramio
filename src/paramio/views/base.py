@@ -6,15 +6,18 @@ import typing
 from src.paramio import types
 from src.paramio.types import var
 
+if typing.TYPE_CHECKING:
+    import typing_extensions as t_ext
+
 
 class BaseView(types.ViewType[var.Inst, var.InType, var.OutType]):
     __slots__ = ("_name",)
 
     @typing.overload
-    def __get__(self, instance: None, owner: type[var.Inst]) -> typing.Self: ...
+    def __get__(self, instance: None, owner: type[var.Inst]) -> t_ext.Self: ...
     @typing.overload
     def __get__(self, instance: var.Inst, owner: type[var.Inst]) -> var.OutType: ...
-    def __get__(self, instance: var.Inst | None, owner: type[var.Inst]) -> var.OutType | typing.Self:
+    def __get__(self, instance: var.Inst | None, owner: type[var.Inst]) -> var.OutType | t_ext.Self:
         if instance is None:
             return self
 

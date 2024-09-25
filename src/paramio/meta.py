@@ -5,6 +5,9 @@ import typing
 
 from . import builder, types
 
+if typing.TYPE_CHECKING:
+    import typing_extensions as t_ext
+
 
 class ParamioMeta(type):
     __is_paramio__: typing.ClassVar[bool] = True
@@ -19,7 +22,7 @@ class ParamioMeta(type):
         name: str,
         bases: tuple[type[ParamioMeta]],
         classdict: dict[str, typing.Any],
-        **kwargs: typing.Unpack[builder.Params],
+        **kwargs: t_ext.Unpack[builder.Params],
     ) -> ParamioMeta:
         return builder.cls_builder(name, bases, classdict, metacls=cls, **kwargs)
 

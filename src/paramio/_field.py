@@ -8,6 +8,9 @@ from . import (
     types,
 )
 
+if typing.TYPE_CHECKING:
+    import typing_extensions as t_ext
+
 OutType = typing.TypeVar("OutType")
 
 
@@ -32,5 +35,5 @@ class Field:
     type_: typing.Any = dataclasses.field(init=False)
 
 
-def field(**kwargs: typing.Unpack[FieldParams[OutType]]) -> OutType:
+def field(**kwargs: t_ext.Unpack[FieldParams[OutType]]) -> OutType:
     return Field(**kwargs)  # type: ignore
