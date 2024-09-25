@@ -30,6 +30,7 @@ jobs:
       run: |
         uv python install ${{ matrix.python-version }}
         uv venv --python ${{ matrix.python-version }}
+        . ./venv/bin/activate
 
     - name: install dependencies
       run: |
