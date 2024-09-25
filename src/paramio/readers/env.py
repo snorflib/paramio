@@ -9,7 +9,7 @@ WINDOWS: typing.Final[bool] = os.name == "nt"
 
 def _build_data(case_sensitive: bool = False, encoding: str = "utf-8") -> dict[str, str]:
     if not hasattr(os, "environb"):
-        return dict(os.environ.items())
+        return {k.lower(): val for k, val in os.environ.items()}
 
     data = {}
     for key_bytes, value_bytes in os.environb.items():
