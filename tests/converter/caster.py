@@ -1,16 +1,15 @@
 import sys
-from typing import TYPE_CHECKING, Any, Literal, NoReturn, Optional, TypedDict
-
-if sys.version_info < (3, 12):
-    Never = NoReturn
-
-if TYPE_CHECKING:
-    import typing_extensions as t_ext
-
+from typing import Any, Literal, NoReturn, Optional, TypedDict
 
 import pytest
 
 from src.paramio.converters import utils
+
+try:
+    from typing import Never, NotRequired, Required  # type: ignore
+except ImportError:
+    Never = NoReturn
+    # (Not)Required are hidden
 
 
 def test_cast_to_int() -> None:
@@ -126,10 +125,11 @@ def test_cast_to_annotated() -> None:
     assert utils.cast_to_type(Annotated[int, "metadata"], "123") == 123
 
 
+@pytest.mark.skipif(sys.version_info < (3, 11), reason="Incompatible python version.")
 def test_cast_with_not_required() -> None:
     class Data(TypedDict):
-        id: t_ext.Required[int]
-        name: t_ext.NotRequired[str]
+        id: Required[int]
+        name: NotRequired[str]
 
     value = {"id": "1"}
     assert utils.cast_to_type(Data, value) == {"id": 1}
@@ -206,10 +206,11 @@ def test_cast_with_nested_unions() -> None:
     assert utils.cast_to_type(Type, value) == [1, ["a", "b"], 2]
 
 
+@pytest.mark.skipif(sys.version_info < (3, 11), reason="Incompatible python version.")
 def test_cast_with_required_and_not_required() -> None:
     class Data(TypedDict, total=True):
         a: int
-        b: t_ext.NotRequired[str]
+        b: NotRequired[str]
 
     value = {"a": "1"}
     assert utils.cast_to_type(Data, value) == {"a": 1}

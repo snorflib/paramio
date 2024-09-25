@@ -4,8 +4,12 @@ import typing
 
 CastType = typing.TypeVar("CastType")
 
-if typing.TYPE_CHECKING:
-    import typing_extensions as t_ext
+try:
+    from typing import Never, NotRequired, Required  # type: ignore
+except ImportError:
+    Never = typing.NoReturn
+    Required, NotRequired = object(), object()
+
 
 def _bool_convert(value: typing.Any) -> bool:
     if isinstance(value, str):
@@ -93,7 +97,7 @@ def _get_type_from_string(type_: str, context: dict[str, typing.Any] | None = No
 
 def _remove_annotated(type_: typing.Any) -> typing.Any:
     if type_ is typing.Annotated:
-        return t_ext.Never
+        return Never
     elif typing.get_origin(type_) is typing.Annotated:
         return _remove_annotated(typing.get_args(type_)[0])
     return type_
@@ -108,7 +112,7 @@ def cast_to_type(
         type_ = None
     elif type_ is typing.Any:
         return value
-    elif (type_ is t_ext.Never) or (type_ is typing.NoReturn):
+    elif (type_ is Never) or (type_ is typing.NoReturn):
         raise TypeError(f"{value!r} cannot be casted to a bottom type.")
     elif isinstance(type_, str):
         type_ = _get_type_from_string(type_, context)
@@ -125,10 +129,10 @@ def cast_to_type(
             args = typing.get_args(val_type)
 
             must_have = type_.__total__
-            if origin is t_ext.NotRequired:
+            if origin is NotRequired:
                 val_type = args[0]
                 must_have = False
-            elif origin is t_ext.Required:
+            elif origin is Required:
                 val_type = args[0]
                 must_have = True
 
