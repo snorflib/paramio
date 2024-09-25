@@ -26,6 +26,23 @@ jobs:
     - name: install uv
       uses: astral-sh/setup-uv@v2
 
+    - name: uv cache
+      id: cache-uv
+      uses: astral-sh/setup-uv@v2
+      env:
+        cache-name: cache-uv-deps
+      with:
+        enable-cache: true
+        path: ~/.uv-cache
+        key: uv-${{ matrix.os }}-${ matrix.python-version }-${{ hashFiles('uv.lock') }}
+        restore-keys: |
+          uv-${{ matrix.os }}-${ matrix.python-version }-${{ hashFiles('uv.lock') }}
+          uv-${{ matrix.os }}-${ matrix.python-version }
+          uv-${{ matrix.os }}
+
+    - name: Minimize uv cache
+      run: uv cache prune --ci
+
     - name: install python-${{ matrix.python-version }}
       run: |
         uv python install ${{ matrix.python-version }}
