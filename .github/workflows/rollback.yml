@@ -3,8 +3,8 @@ name: Rollback on Failure
 on:
   workflow_run:
     workflows: [Run Tests]
-    types:
-      - completed
+    types: [completed]
+    branches: [develop]
 
 jobs:
   revert:
