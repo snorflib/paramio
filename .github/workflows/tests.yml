@@ -40,4 +40,11 @@ jobs:
       
     - name: run tests
       run: |
-        uv run pytest -s tests/ --tb=long --pastebin=all
+        uv run pytest -s tests/ --tb=long --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+
+    - name: upload test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-results-${{ matrix.python-version }}
+        path: junit/test-results-${{ matrix.python-version }}.xml
+        if: ${{ always() }}
