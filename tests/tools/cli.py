@@ -17,3 +17,6 @@ def test_no_flag() -> None:
     sys.argv = ["-not-the-flag", "filename.txt"]
     assert tools.get_flag_value("-config") is None
 
+
+def test_fail() -> None:
+    raise ValueError
