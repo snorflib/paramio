@@ -1,4 +1,12 @@
-from typing import Any, Literal, Never, NoReturn, NotRequired, Optional, Required, TypedDict
+import sys
+from typing import TYPE_CHECKING, Any, Literal, NoReturn, Optional, TypedDict
+
+if sys.version_info < (3, 11):
+    Never = NoReturn
+
+if TYPE_CHECKING:
+    import typing_extensions as t_ext
+
 
 import pytest
 
@@ -120,8 +128,8 @@ def test_cast_to_annotated() -> None:
 
 def test_cast_with_not_required() -> None:
     class Data(TypedDict):
-        id: Required[int]
-        name: NotRequired[str]
+        id: t_ext.Required[int]
+        name: t_ext.NotRequired[str]
 
     value = {"id": "1"}
     assert utils.cast_to_type(Data, value) == {"id": 1}
@@ -201,7 +209,7 @@ def test_cast_with_nested_unions() -> None:
 def test_cast_with_required_and_not_required() -> None:
     class Data(TypedDict, total=True):
         a: int
-        b: NotRequired[str]
+        b: t_ext.NotRequired[str]
 
     value = {"a": "1"}
     assert utils.cast_to_type(Data, value) == {"a": 1}
