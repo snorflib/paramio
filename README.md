@@ -26,7 +26,10 @@ Paramio is designed to be flexible. You can customize every part of the configur
 
 | Paramio | Python  | Support  |
 |---------|---------|----------|
-| 0.1.0   | >= 3.10 | ✅ Current |
+| 0.0.1   | 3.13 | ✅ Current |
+| 0.0.1   | 3.12 | ✅ Current |
+| 0.0.1   | 3.11 | ✅ Current |
+| 0.0.1   | 3.10 | ✅ Current |
 
 ## How to Get Started
 
