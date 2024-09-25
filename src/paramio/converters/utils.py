@@ -8,7 +8,9 @@ try:
     from typing import Never, NotRequired, Required  # type: ignore
 except ImportError:
     Never = typing.NoReturn
-    Required, NotRequired = object(), object()
+
+    T = typing.TypeVar("T")
+    Required = NotRequired = typing.Annotated[T, ""]
 
 
 def _bool_convert(value: typing.Any) -> bool:
