@@ -1,0 +1,24 @@
+name: Revert on Failure
+env:
+ BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+
+on:
+  workflow_run:
+    workflows: ["tests.yml"]
+    types:
+      - completed
+
+jobs:
+  revert:
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Revert last commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git revert HEAD --no-edit
+          git push origin HEAD:${{ BRANCH_NAME }}
