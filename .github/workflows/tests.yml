@@ -11,7 +11,7 @@ on:
 
 jobs:
   tests:
-    name: tests | static checking | linting
+    name: tests
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -34,10 +34,10 @@ jobs:
     - name: install dependencies
       run: |
         uv sync --dev
-        
+
     - name: ruff | mypy checks
       run: |
-        uv run ruff check .
+        uv run ruff check . --no-fix
         uv run mypy --no-warn-unused-ignores . 
       
     - name: run tests
