@@ -1,4 +1,4 @@
-name: Revert on Failure
+name: Rollback on Failure
 
 on:
   workflow_run:
@@ -12,14 +12,17 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 0
       
       - name: Set up Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Revert last commit with job name in message
+      - name: Revert last commit
         run: |
           git revert --no-edit HEAD
           git push
