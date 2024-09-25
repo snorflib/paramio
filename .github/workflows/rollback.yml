@@ -21,4 +21,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git revert HEAD --no-edit
-          git push origin HEAD:${{ BRANCH_NAME }}
+          git push origin HEAD:$BRANCH_NAME
