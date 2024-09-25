@@ -1,6 +1,6 @@
 [project]
 name = "paramio"
-version = "0.1.0"
+version = "0.0.1"
 description = "lightweight, dependency-free Python library for easy configuration management."
 authors = [
   { name = "snorflib (<https://github.com/snorflib>)"},

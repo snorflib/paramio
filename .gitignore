@@ -648,6 +648,7 @@ MigrationBackup/
 */test.py
 test.py
 dev/**
+TODO.md
 
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,vs
 
