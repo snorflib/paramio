@@ -10,7 +10,7 @@ class MockEnvConfig:
     HOST: typing.Annotated[str, "Looks like it's annotated"]
     PORT: int = 8080
     USERNAMES: list[str] | str = ""
-    PASSWORD: str | None = field(default=None, secret=True, prefix="DB_")
+    PASSWORD: str | None = field(default=None, secret=True, key="DB_PASSWORD")
 
     MY_VAR: typing.ClassVar[str] = "This value wouldn't be affected."
 
