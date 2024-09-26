@@ -32,7 +32,7 @@ jobs:
   test-pypi:
     runs-on: ubuntu-latest
     needs: build
-    if: ${{ inputs.production == false }}
+    if: ${{ inputs.production }}
 
     permissions:
       id-token: write 
@@ -48,7 +48,7 @@ jobs:
   prod-pypi:
     runs-on: ubuntu-latest
     needs: [build]
-    if: ${{ inputs.production == true }}
+    if: ${{ inputs.production }}
 
     permissions:
       id-token: write 

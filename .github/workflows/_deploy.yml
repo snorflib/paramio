@@ -22,7 +22,7 @@ jobs:
 
   publish:
     needs: tests
-    if: ${{ inputs.publish == true }}
+    if: ${{ inputs.publish }}
 
     uses: ./.github/workflows/_publish.yml
     with:

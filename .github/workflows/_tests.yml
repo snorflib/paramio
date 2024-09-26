@@ -54,8 +54,9 @@ jobs:
           uv run pytest -s tests/ --tb=long --junitxml=~/junit/test-results-${{ matrix.os }}-${{ matrix.python-version }}.xml
 
       - name: Upload Test Results
+        if: always()
+
         uses: actions/upload-artifact@v4
         with:
           name: pytest-results-${{ matrix.python-version }}
           path: ~/junit/test-results-${{ matrix.python-version }}.xml
-        if: always()
