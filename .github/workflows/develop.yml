@@ -3,6 +3,7 @@ name: Develop Branch
 on:
     push:
         branches:
+        - '*'
         - develop
     pull_request:
         branches:
