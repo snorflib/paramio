@@ -25,6 +25,7 @@ jobs:
     needs: tests
     if: ${{ inputs.publish == 'true' }}
 
-    uses: ./.github/workflows/_publish.yml
-    with:
+    steps:
+    - uses: ./.github/workflows/_publish.yml
+      with:
         production: ${{ inputs.branch == 'main' }}
