@@ -1,28 +1,24 @@
-name: Rollback on Failure
+name: Rollback
 
-on:
-  workflow_run:
-    workflows: [Run Tests]
-    types: [completed]
-    branches: [develop]
+on: workflow_call
 
 jobs:
   revert:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.branch }}
           fetch-depth: 0
-      
-      - name: Set up Git
+          
+      - name: Set Up Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Revert last commit
+    
+      - name: Revert Last Commit
         run: |
           git revert --no-edit HEAD
           git push

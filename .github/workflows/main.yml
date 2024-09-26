@@ -1,0 +1,17 @@
+name: Main Branch
+
+on:
+    push:
+        branches:
+        - main
+    pull_request:
+        branches:
+        - main
+
+jobs:
+    deploy:
+        uses: ./.github/workflows/_deploy.yml
+        with:
+            publish: ${{ startsWith(github.ref, 'refs/tags/v') }}
+            branch: 'main'
+

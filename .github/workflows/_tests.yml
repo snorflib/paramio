@@ -1,0 +1,61 @@
+name: Test
+on: workflow_call
+
+jobs:
+  tests:
+    name: Test
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      max-parallel: 5
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v2
+
+      - name: UV Cache
+        id: cache-uv
+        uses: astral-sh/setup-uv@v2
+        env:
+          cache-name: cache-uv-deps
+        with:
+          enable-cache: true
+          path: ~/.uv-cache
+          key: uv-${{ matrix.os }}-${ matrix.python-version }-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            uv-${{ matrix.os }}-${ matrix.python-version }-${{ hashFiles('uv.lock') }}
+            uv-${{ matrix.os }}-${ matrix.python-version }
+            uv-${{ matrix.os }}
+
+      - name: Minimize UV Cache
+        run: uv cache prune --ci
+
+      - name: Install Python-${{ matrix.python-version }}
+        run: |
+          uv python install ${{ matrix.python-version }}
+          uv venv --python ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          uv sync --dev
+
+      - name: Ruff | Mypy Checks
+        run: |
+          uv run ruff check . --no-fix
+          uv run mypy --no-warn-unused-ignores . 
+      
+      - name: Run Tests
+        run: |
+          uv run pytest -s tests/ --tb=long --junitxml=~/junit/test-results-${{ matrix.os }}-${{ matrix.python-version }}.xml
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: ~/junit/test-results-${{ matrix.python-version }}.xml
+        if: always()

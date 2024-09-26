@@ -1,0 +1,61 @@
+name: Publish
+
+on:
+  workflow_call:
+    inputs:
+      production:
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v2
+
+      - name: Install Dependencies
+        run: |
+          uv sync --no-dev
+
+      - name: Build Package
+        run: uv build
+
+  test-pypi:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ inputs.production == false }}
+
+    permissions:
+      id-token: write 
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  prod-pypi:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: ${{ inputs.production == true }}
+
+    permissions:
+      id-token: write 
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish
+        run: |
+          uv publish
