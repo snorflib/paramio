@@ -3,7 +3,7 @@ name: Main Branch
 on:
     push:
         tags:
-        - '*'
+        - 'v*'
         branches:
         - main
     pull_request:

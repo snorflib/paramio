@@ -2,8 +2,9 @@ name: Develop Branch
 
 on:
     push:
+        tags:
+        - 'v*'
         branches:
-        - '*'
         - develop
     pull_request:
         branches:
