@@ -53,7 +53,7 @@ jobs:
           path: dist
 
       - name: Publish
-        uses: pypa/gh-action-pypi-publish
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
           password: ${{ secrets.PYPI_TEST_API_TOKEN }}
