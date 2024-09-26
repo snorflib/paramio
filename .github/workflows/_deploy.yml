@@ -27,3 +27,4 @@ jobs:
     uses: ./.github/workflows/_publish.yml
     with:
       production: ${{ inputs.branch == 'main' }}
+    secrets: inherit

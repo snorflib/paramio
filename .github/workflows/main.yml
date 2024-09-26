@@ -14,4 +14,4 @@ jobs:
         with:
             publish: true
             branch: 'main'
-
+        secrets: inherit

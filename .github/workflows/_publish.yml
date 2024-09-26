@@ -18,6 +18,10 @@ jobs:
       - name: Install UV
         uses: astral-sh/setup-uv@v2
 
+      - name: Install Dependencies
+        run: |
+          uv sync --no-dev
+
       - name: Build Package
         run: uv build
 
@@ -36,33 +40,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get UV
-        uses: astral-sh/setup-uv@v2
-
-      - name: Install Dependencies
-        run: |
-          uv add --no-sync twine
-
       - name: Download build
         uses: actions/download-artifact@v4
         with:
           name: dist 
           path: dist
 
-      - run: |
-          echo '::add-mask::${{ secrets.PYPI_TEST_API_TOKEN }}'
-
       - name: Publish
-        run: |
-          uv run twine upload \
-            -r testpypi \
-            --non-interactive \
-            --comment "What a sigma" \
-            --verbose \
-            dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TEST_API_TOKEN }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          password: ${{ secrets.PYPI_TEST_API_TOKEN }}
+          username: __token__
 
   prod-pypi:
     runs-on: ubuntu-latest
@@ -76,9 +65,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
-
-      - name: Get UV
-        uses: astral-sh/setup-uv@v2
 
       - name: Publish
         run: |
