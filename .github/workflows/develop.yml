@@ -10,7 +10,7 @@ on:
 
 jobs:
     deploy:
-        uses: ./.github/workflows/_deploy.yml
+        uses: ./.github/workflows/_deploy.yml@develop
         with:
             publish: ${{ startsWith(github.ref, 'refs/tags/v') }}
             branch: 'develop'
