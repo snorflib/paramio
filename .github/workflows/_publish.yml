@@ -56,11 +56,12 @@ jobs:
         run: |
           uv run twine upload \
             -r testpypi \
-            --username __token__ \
-            --password ${{ secrets.PYPI_TEST_API_TOKEN }} \
             --non-interactive \
             --comment "What a sigma" \
             dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TEST_API_TOKEN }}
 
   prod-pypi:
     runs-on: ubuntu-latest
