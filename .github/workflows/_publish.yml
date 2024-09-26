@@ -58,6 +58,7 @@ jobs:
             -r testpypi \
             --non-interactive \
             --comment "What a sigma" \
+            --verbose \
             dist/*
         env:
           TWINE_USERNAME: __token__
