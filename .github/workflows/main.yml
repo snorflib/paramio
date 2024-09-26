@@ -10,7 +10,7 @@ on:
 
 jobs:
     deploy:
-        uses: ./.github/workflows/_deploy.yml@main
+        uses: snorflib/paramio/.github/workflows/_deploy.yml@main
         with:
             publish: ${{ startsWith(github.ref, 'refs/tags/v') }}
             branch: 'main'
