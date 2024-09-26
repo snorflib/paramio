@@ -52,6 +52,8 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
           password: ${{ secrets.PYPI_TEST_API_TOKEN }}
           username: __token__
+        env:
+          TWINE_DISABLE_OIDC: '1'
 
   prod-pypi:
     runs-on: ubuntu-latest
