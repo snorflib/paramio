@@ -12,6 +12,6 @@ jobs:
     deploy:
         uses: ./.github/workflows/_deploy.yml
         with:
-            publish: true
-            branch: 'develop'
+            publish: false
+            production: false
         secrets: inherit

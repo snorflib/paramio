@@ -7,10 +7,10 @@ on:
         description: 'Flag to trigger publish'
         required: true
         type: boolean
-      branch:
-        description: 'Branch name'
+      production:
+        description: 'Whether push to production or not.'
         required: true
-        type: string
+        type: boolean
 
 
 jobs:
@@ -26,5 +26,5 @@ jobs:
 
     uses: ./.github/workflows/_publish.yml
     with:
-      production: ${{ inputs.branch == 'main' }}
+      production: ${{ inputs.production }}
     secrets: inherit

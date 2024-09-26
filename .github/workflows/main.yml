@@ -13,5 +13,5 @@ jobs:
         uses: ./.github/workflows/_deploy.yml
         with:
             publish: true
-            branch: 'main'
+            production: false
         secrets: inherit

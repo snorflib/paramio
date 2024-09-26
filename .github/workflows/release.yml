@@ -1,0 +1,16 @@
+name: On Release
+
+on:
+    release:
+        types:
+          - created
+
+jobs:
+    deploy:
+        uses: ./.github/workflows/_deploy.yml
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+
+        with:
+            publish: true
+            production: true
+        secrets: inherit
