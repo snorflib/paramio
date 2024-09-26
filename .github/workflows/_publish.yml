@@ -14,7 +14,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -31,8 +30,8 @@ jobs:
 
   test-pypi:
     runs-on: ubuntu-latest
-    needs: build
-    if: ${{ inputs.production }}
+    needs: [build]
+    if: ${{ !inputs.production }}
 
     permissions:
       id-token: write 

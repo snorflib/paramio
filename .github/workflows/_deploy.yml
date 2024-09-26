@@ -21,7 +21,7 @@ jobs:
     uses: ./.github/workflows/_tests.yml
 
   publish:
-    needs: tests
+    needs: [tests]
     if: ${{ inputs.publish }}
 
     uses: ./.github/workflows/_publish.yml
