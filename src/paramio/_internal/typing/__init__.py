@@ -128,14 +128,8 @@ _Fallback: dict[str, typing.Any] = {
     "Required": _NotRuntime,
     "Unpack": _NotRuntime,
 }
-_DefaultAttrs: dict[str, typing.Any] = {
-    "__path__": __name__,
-}
-
 
 def __getattr__(name: str) -> Any:
-    if attr := _DefaultAttrs.get(name):
-        return attr
     if hasattr(typing, name):
         return getattr(typing, name)
     if hasattr(typing_extensions, name):
