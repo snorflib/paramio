@@ -13,7 +13,7 @@ jobs:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     env:
-      UV_CACHE_DIR: ~/.uv-cache
+      UV_CACHE_DIR:  /tmp/.uv-cache
 
     steps:
       - uses: actions/checkout@v4
