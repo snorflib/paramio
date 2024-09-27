@@ -20,17 +20,16 @@ jobs:
 
       - name: UV Cache
         id: cache-uv
-        uses: astral-sh/setup-uv@v2
+        uses: actions/cache@v4
         env:
           cache-name: cache-uv-deps
         with:
           enable-cache: true
           path: ~/.uv-cache
-          key: uv-${{ matrix.os }}-${ matrix.python-version }-${{ hashFiles('uv.lock') }}
+          key: uv-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}
           restore-keys: |
-            uv-${{ matrix.os }}-${ matrix.python-version }-${{ hashFiles('uv.lock') }}
-            uv-${{ matrix.os }}-${ matrix.python-version }
-            uv-${{ matrix.os }}
+            uv-${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}
+            uv-${{ matrix.os }}-${{ matrix.python-version }}
 
       - name: Minimize UV Cache
         run: uv cache prune --ci
