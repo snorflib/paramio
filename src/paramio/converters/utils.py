@@ -1,4 +1,5 @@
 import ast
+import datetime
 import types
 
 from src.paramio._internal import typing
@@ -111,6 +112,8 @@ def cast_to_type(
         raise TypeError(f"{value!r} cannot be casted to a bottom type.")
     elif isinstance(type_, str):
         type_ = _get_type_from_string(type_, context)
+
+    original_type = type_
     type_ = _remove_annotated(type_)
 
     if type_ in BuiltInPrimitives:
@@ -139,6 +142,18 @@ def cast_to_type(
 
     args = typing.get_args(type_)
     origin = typing.get_origin(type_) or type_
+
+    if type_ is datetime.datetime:
+        format_ = "%Y-%m-%dT%H:%M:%S"
+        origin_ = typing.get_origin(original_type)
+
+        if (
+            (origin_ is typing.Annotated)
+            and (len(meta := original_type.__metadata__) > 0)  # type: ignore
+            and isinstance((frmt := meta[0]), str)
+        ):
+            format_ = frmt
+        return datetime.datetime.strptime(value, format_)
 
     if origin is typing.ClassVar:
         return cast_to_type(args[0], value)

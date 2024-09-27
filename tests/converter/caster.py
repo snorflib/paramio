@@ -1,6 +1,9 @@
+import datetime
+
 import pytest
 
 from src.paramio._internal.typing import (
+    Annotated,
     Any,
     Literal,
     Never,
@@ -203,6 +206,13 @@ def test_cast_with_wrong_type() -> None:
 
 def test_cast_with_frozenset() -> None:
     assert utils.cast_to_type(frozenset[int], {"1", "2"}) == frozenset({1, 2})
+
+
+def test_cast_datetime() -> None:
+    case_one = datetime.datetime(2024, 9, 27, 15, 30, 45)
+    case_two = datetime.datetime(2024, 9, 27, 0, 0, 0)
+    assert utils.cast_to_type(datetime.datetime, "2024-09-27T15:30:45") == case_one
+    assert utils.cast_to_type(Annotated[datetime.datetime, "%Y-%m-%d"], "2024-09-27") == case_two
 
 
 def test_cast_with_nested_unions() -> None:
