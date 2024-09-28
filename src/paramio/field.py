@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import dataclasses
-import typing
 
 from . import entries, prototype, types, view
+from ._internal import typing
 from .types import var
 
 
