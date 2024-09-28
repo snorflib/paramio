@@ -3,22 +3,30 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-from . import entries, prototype, types, views
+from . import entries, prototype, types, view
 from .types import var
+
+
+class Params(typing.TypedDict, total=False):
+    name: str
+    key: typing.Any
+    default: typing.Any
+    reader: types.ReaderType[typing.Any, typing.Any]
+    converter: types.ConverterType[typing.Any, typing.Any]
 
 
 @dataclasses.dataclass(slots=True)
 class FieldBuilder(
-    types.FieldBuilderType[prototype.Prototype, var.InType, var.OutType],
-    typing.Generic[var.InType, var.OutType, var.RawType, var.KeyType],
+    types.FieldBuilderType[prototype.Prototype, typing.Never, var.OutType],
+    typing.Generic[var.KeyType, var.OutType],
 ):
     name: str
     key: var.KeyType
     default: var.OutType
-    reader: types.ReaderType[var.KeyType, var.RawType]
-    converter: types.ConverterType[var.RawType, var.OutType]
+    reader: types.ReaderType[var.KeyType, typing.Any]
+    converter: types.ConverterType[typing.Any, var.OutType]
 
-    def build_entry(self) -> types.EntryType[var.InType, var.OutType]:
+    def build_entry(self) -> types.EntryType[typing.Never, var.OutType]:
         return entries.ImmutableEntry(
             self.key,
             self.reader,
@@ -27,4 +35,4 @@ class FieldBuilder(
         )
 
     def build_view(self) -> types.ViewType[prototype.Prototype, var.InType, var.OutType]:
-        return views.ReadOnlyView()
+        return view.ReadOnlyView()

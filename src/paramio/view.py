@@ -3,9 +3,9 @@ from __future__ import annotations
 # Ruff complaints when overload is not from the standard library
 from typing import overload
 
-from src.paramio import prototype, types
-from src.paramio._internal import typing
-from src.paramio.types import var
+from . import prototype, types
+from ._internal import typing
+from .types import var
 
 Self = typing.TypeVar("Self")
 Inst = typing.TypeVar("Inst", bound=prototype.Prototype)

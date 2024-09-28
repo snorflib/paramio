@@ -6,6 +6,7 @@ from . import entry, var, view
 DefaultType = typing.TypeVar("DefaultType")
 
 
+@typing.runtime_checkable
 class FieldBuilderType(typing.Protocol[var.Inst, var.InType, var.OutType]):
     @abc.abstractmethod
     def build_entry(self) -> entry.EntryType[var.InType, var.OutType]:
