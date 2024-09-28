@@ -12,5 +12,5 @@ class FieldBuilderType(typing.Protocol[var.Inst, var.InType, var.OutType]):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def build_view(self) -> view.ViewType[var.Inst, var.Inst, var.OutType]:
+    def build_view(self) -> view.ViewType[var.Inst, var.InType, var.OutType]:
         raise NotImplementedError
