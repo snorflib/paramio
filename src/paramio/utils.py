@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from . import field
+from . import _internal, converters, field, types
 from ._internal import typing
 
 
@@ -21,7 +21,7 @@ def _create_field_builder(
     return field.FieldBuilder(**(defaults | params))
 
 
-def _fill_field_builders(
+def _fill_field_builder(
     field: field.FieldBuilder[typing.Any, typing.Any],
     **params: typing.Unpack[field.Params],
 ) -> field.FieldBuilder[typing.Any, typing.Any]:
@@ -32,5 +32,23 @@ def _fill_field_builders(
 
 def _get_field_builders(
     classdict: dict[str, typing.Any],
-) -> dict[str, field.FieldBuilder[typing.Any, typing.Any]]:
-    return {}
+    **kwds: typing.Unpack[field.Params],
+) -> dict[str, types.FieldBuilderType[typing.Any, typing.Any, typing.Any]]:
+    fields = {}
+    for name, type_ in classdict.get("__annotations__", {}).items():
+        value = classdict.get(name, _internal.SENTINEL)
+
+        if isinstance(value, types.FieldBuilderType):
+            attr = value
+        elif hasattr(value, "__get__") or _is_classvar(type_) or isinstance(value, types.ViewType):
+            continue
+        elif name.startswith("_"):
+            continue
+        elif name not in classdict:
+            attr = _create_field_builder(kwds, key=name, converter=converters.Caster(type_))
+        else:
+            attr = _create_field_builder(kwds, default=value, key=name, converter=converters.Caster(type_))
+
+        fields[name] = attr
+
+    return fields

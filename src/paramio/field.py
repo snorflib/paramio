@@ -8,7 +8,6 @@ from .types import var
 
 
 class Params(typing.TypedDict, total=False):
-    name: str
     key: typing.Any
     default: typing.Any
     reader: types.ReaderType[typing.Any, typing.Any]
@@ -20,7 +19,6 @@ class FieldBuilder(
     types.FieldBuilderType[prototype.Prototype, typing.Never, var.OutType],
     typing.Generic[var.KeyType, var.OutType],
 ):
-    name: str
     key: var.KeyType
     default: var.OutType
     reader: types.ReaderType[var.KeyType, typing.Any]
