@@ -6,12 +6,10 @@ __all__ = (
 
 import typing
 
-from . import key
-
 Inst = typing.TypeVar("Inst", contravariant=True)
 
 InType = typing.TypeVar("InType", contravariant=True)
 OutType = typing.TypeVar("OutType", covariant=True)
 
-KeyType = typing.TypeVar("KeyType", contravariant=True, bound=key.KeyType)
+KeyType = typing.TypeVar("KeyType", contravariant=True, bound=tuple[str, ...])
 RawType = typing.TypeVar("RawType", covariant=True)

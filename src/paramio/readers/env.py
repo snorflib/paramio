@@ -19,7 +19,7 @@ def _build_data(case_sensitive: bool = False, encoding: str = "utf-8") -> dict[s
     return data
 
 
-class Env(types.ReaderType[str, str]):
+class Env(types.ReaderType[tuple[str, ...], str]):
     __slots__ = (
         "case_sensitive",
         "encoding",
@@ -33,14 +33,15 @@ class Env(types.ReaderType[str, str]):
         self.case_sensitive = False if WINDOWS else case_sensitive
         self.encoding = encoding
 
-    def __getitem__(self, key: str) -> str:
+    def __getitem__(self, key: tuple[str, ...]) -> str:
+        key_str = "".join(key)
         data = _build_data(self.case_sensitive, self.encoding)
-        return data[key if self.case_sensitive else key.lower()]
+        return data[key_str if self.case_sensitive else key_str.lower()]
 
-    def get(self, key: str, default: DefaultType) -> str | DefaultType:
-        data = _build_data(self.case_sensitive, self.encoding)
-        key = key if self.case_sensitive else key.lower()
-        return data.get(key, default)
+    def get(self, key: tuple[str, ...], default: DefaultType) -> str | DefaultType:
+        key_str = "".join(key)
+        key_str = key_str if self.case_sensitive else key_str.lower()
+        return _build_data(self.case_sensitive, self.encoding).get(key_str, default)
 
     def __repr__(self) -> str:
         return type(self).__name__
