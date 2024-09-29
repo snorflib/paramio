@@ -8,6 +8,7 @@ from .types import var
 
 
 class Params(typing.TypedDict, total=False):
+    prefix: typing.Any
     key: typing.Any
     default: typing.Any
     reader: types.ReaderType[typing.Any, typing.Any]
@@ -19,14 +20,16 @@ class FieldBuilder(
     types.FieldBuilderType[prototype.Prototype, typing.Never, var.OutType],
     typing.Generic[var.KeyType, var.OutType],
 ):
+    prefix: var.KeyType
     key: var.KeyType
     default: var.OutType
     reader: types.ReaderType[var.KeyType, typing.Any]
     converter: types.ConverterType[typing.Any, var.OutType]
 
     def build_entry(self) -> types.EntryType[typing.Never, var.OutType]:
+        key: var.KeyType = self.prefix + self.key if self.prefix else self.key
         return entries.ImmutableEntry(
-            self.key,
+            key,
             self.reader,
             self.converter,
             self.default,
