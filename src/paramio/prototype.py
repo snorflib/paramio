@@ -9,6 +9,7 @@ MappingProxy = btn_types.MappingProxyType
 
 
 class Prototype(typing.Protocol):
+    __paramio__: typing.ClassVar[bool] = True
     __entries__: typing.ClassVar[MappingProxy[str, types.EntryType[typing.Any, typing.Any]]] = MappingProxy({})
     __views__: typing.ClassVar[tuple[str, ...]] = ()
 
