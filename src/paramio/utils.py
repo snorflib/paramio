@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import collections.abc
+
 from . import _internal, converters, field, types
 from ._internal import typing
 
@@ -31,7 +33,7 @@ def _fill_field_builder(
 
 
 def _get_field_builders(
-    classdict: dict[str, typing.Any],
+    classdict: collections.abc.Mapping[str, typing.Any],
     **kwds: typing.Unpack[field.Params],
 ) -> dict[str, types.FieldBuilderType[typing.Any, typing.Any, typing.Any]]:
     fields = {}
